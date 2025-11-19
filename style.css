@@ -1465,6 +1465,29 @@ a:link, a:visited {
 }
 
 
+/* === 1. СДЕЛАТЬ ВЕСЬ ТЕКСТ БЕЛЫМ === */
+* {
+    color: white !important;
+}
+
+/* === 2. СДЕЛАТЬ ВКЛАДКИ "LEADERBOARD" И "ANALYTICS" ТЕМНО-СЕРЫМИ === */
+.tab-btn {
+    background: #1a1a1a !important; /* Темно-серый фон */
+    color: #e0e0e0 !important;     /* Светло-серый текст (для контраста) */
+    border: 1px solid #333 !important; /* Тонкая обводка */
+    border-radius: 5% !important;  /* Сохраняем скругление */
+}
+
+.tab-btn:hover {
+    background: #2d2d2d !important; /* Чуть светлее при наведении */
+    color: #ffffff !important;     /* Белый текст при наведении */
+}
+
+.tab-btn.active {
+    background: #0f0f0f !important; /* Почти черный для активной вкладки */
+    color: #ffffff !important;     /* Белый текст */
+    border-color: #666 !important; /* Более заметная обводка */
+}
 
 
 

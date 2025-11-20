@@ -16,7 +16,6 @@ function getPassportData() {
     const avatarUrl = document.getElementById('avatar-preview').src;
     const username = document.getElementById('display-username').textContent;
     const selectedBadges = Array.from(document.querySelectorAll('.badge-checkbox:checked')).map(cb => cb.value);
-    // Добавим получение выбранных стран, если нужно использовать в генерации
     // const selectedCountries = Array.from(document.querySelectorAll('.country-checkbox:checked')).map(cb => cb.value);
     return { avatarUrl, username, selectedBadges };
 }

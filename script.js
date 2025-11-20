@@ -1,5 +1,6 @@
 // --- ВАЖНО: Замените 'YOUR_IMGBB_API_KEY' на ваш реальный API Key от ImgBB ---
-const IMGBB_API_KEY = 'YOUR_IMGBB_API_KEY';
+// Если вы не хотите использовать ImgBB, просто оставьте пустую строку.
+const IMGBB_API_KEY = 'YOUR_IMGBB_API_KEY'; // <-- ЗАМЕНИТЕ НА ВАШ КЛЮЧ ИЛИ ОСТАВЬТЕ ПУСТЫМ
 
 // --- Маппинг бейджей на классы ---
 const badgeClassMap = {
@@ -70,7 +71,11 @@ document.getElementById('download-btn').addEventListener('click', function() {
 
     html2canvas(generatedPassportElement, {
         backgroundColor: '#121212', // Установить фон для холста
-        scale: 2 // Повысить качество (по умолчанию 1)
+        scale: 2, // Повысить качество (по умолчанию 1)
+        // Важно: использовать allowTaint и useCORS может помочь с внешними изображениями, но не гарантирует.
+        // Для Data URL они не обязательны.
+        // allowTaint: true,
+        // useCORS: true,
     }).then(canvas => {
         const link = document.createElement('a');
         link.download = 'my-discord-passport.png';
@@ -81,26 +86,15 @@ document.getElementById('download-btn').addEventListener('click', function() {
 
 // --- Обработчик кнопки "Поделиться в Twitter" ---
 document.getElementById('twitter-btn').addEventListener('click', function() {
-    // const generatedPassportElement = document.getElementById('generated-passport');
-    // html2canvas(generatedPassportElement, { backgroundColor: '#121212', scale: 1 }).then(canvas => {
-    //     canvas.toBlob(blob => {
-    //         const file = new File([blob], "passport.png", { type: "image/png" });
-    //         const formData = new FormData();
-    //         formData.append('file', file);
-    //         // Загрузка на ImgBB для получения URL...
-    //         // Слишком сложно для клиентского шара.
-    //     });
-    // });
-
-    // --- Проще: просто текстовый твит ---
+    // Для простоты, отправляем текстовый твит.
+    // Загрузка изображения в твит требует серверного кода или сложных клиентских API.
     const { username } = getPassportData();
     const tweetText = encodeURIComponent(`Проверь мой новый Discord Passport! @${username} #Discord #Passport`);
     const twitterUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
     window.open(twitterUrl, '_blank');
 });
 
-// --- Код загрузки аватара и восстановления данных (остается без изменений) ---
-
+// --- Обработчик загрузки аватара (обновлённый) ---
 document.getElementById('avatar-upload').addEventListener('change', async function(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -121,43 +115,83 @@ document.getElementById('avatar-upload').addEventListener('change', async functi
         return;
     }
 
-    const formData = new FormData();
-    formData.append('image', file);
-    formData.append('key', IMGBB_API_KEY);
+    // --- НОВАЯ ЛОГИКА: Преобразование в Data URL ---
+    const reader = new FileReader();
+    reader.onload = async function(readerEvent) {
+        // 1. Устанавливаем Data URL в src аватара для немедленного отображения и html2canvas
+        const dataUrl = readerEvent.target.result;
+        document.getElementById('avatar-preview').src = dataUrl;
 
-    try {
-        const response = await fetch('https://api.imgbb.com/1/upload', {
-            method: 'POST',
-            body: formData,
-        });
+        // 2. Сохраняем Data URL в localStorage
+        localStorage.setItem('userAvatarDataUrl', dataUrl);
 
-        const result = await response.json();
+        // 3. Пытаемся загрузить файл на ImgBB (только если API Key задан)
+        if (IMGBB_API_KEY) {
+            const formData = new FormData();
+            formData.append('image', file); // Отправляем оригинальный файл
+            formData.append('key', IMGBB_API_KEY);
 
-        if (result.success && result.data && result.data.url) {
-            const imageUrl = result.data.url;
-            console.log('Изображение успешно загружено на ImgBB:', imageUrl);
+            try {
+                const response = await fetch('https://api.imgbb.com/1/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
 
-            document.getElementById('avatar-preview').src = imageUrl;
-            localStorage.setItem('userAvatarUrl', imageUrl);
+                const result = await response.json();
 
-            statusElement.textContent = 'Загружено!';
-            statusElement.className = 'success';
+                if (result.success && result.data && result.data.url) {
+                    const imageUrl = result.data.url;
+                    console.log('Изображение успешно загружено на ImgBB:', imageUrl);
+
+                    // Заменяем Data URL на URL от ImgBB (опционально, но позволяет использовать постоянную ссылку)
+                    document.getElementById('avatar-preview').src = imageUrl;
+                    // Сохраняем URL от ImgBB в localStorage
+                    localStorage.setItem('userAvatarUrl', imageUrl);
+
+                    statusElement.textContent = 'Загружено на ImgBB!';
+                    statusElement.className = 'success';
+                } else {
+                    console.error('Ошибка от ImgBB API:', result);
+                    statusElement.textContent = `Ошибка загрузки на ImgBB: ${result.error?.message || 'Неизвестная ошибка'}`;
+                    statusElement.className = 'error';
+                    // Если загрузка на ImgBB не удалась, остаёмся с Data URL
+                    // (который уже установлен и сохранён в localStorage)
+                }
+            } catch (error) {
+                console.error('Ошибка при запросе к ImgBB API:', error);
+                statusElement.textContent = `Ошибка сети при загрузке на ImgBB: ${error.message}`;
+                statusElement.className = 'error';
+                // Если загрузка на ImgBB не удалась, остаёмся с Data URL
+                // (который уже установлен и сохранён в localStorage)
+            }
         } else {
-            console.error('Ошибка от ImgBB API:', result);
-            statusElement.textContent = `Ошибка загрузки: ${result.error?.message || 'Неизвестная ошибка'}`;
-            statusElement.className = 'error';
+            // Если API Key не задан, просто используем Data URL
+            statusElement.textContent = 'Аватар загружен локально (Data URL).';
+            statusElement.className = 'success';
         }
-    } catch (error) {
-        console.error('Ошибка при запросе к API:', error);
-        statusElement.textContent = `Ошибка сети: ${error.message}`;
+    };
+    reader.onerror = function() {
+        console.error('Ошибка при чтении файла.');
+        statusElement.textContent = 'Ошибка при чтении файла.';
         statusElement.className = 'error';
-    }
+    };
+    reader.readAsDataURL(file); // Начинаем чтение файла как Data URL
 });
 
+// --- Восстановление данных при загрузке страницы ---
 document.addEventListener('DOMContentLoaded', function() {
+    // Пытаемся восстановить из localStorage: сначала URL от ImgBB, затем Data URL
     const savedAvatarUrl = localStorage.getItem('userAvatarUrl');
+    const savedAvatarDataUrl = localStorage.getItem('userAvatarDataUrl');
+
     if (savedAvatarUrl) {
+        // Приоритет у URL от ImgBB
         document.getElementById('avatar-preview').src = savedAvatarUrl;
+        console.log('Аватар восстановлен из ImgBB URL.');
+    } else if (savedAvatarDataUrl) {
+        // Если URL от ImgBB нет, используем Data URL
+        document.getElementById('avatar-preview').src = savedAvatarDataUrl;
+        console.log('Аватар восстановлен из Data URL.');
     }
 
     const savedUsername = localStorage.getItem('userUsername');
@@ -167,6 +201,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// --- Обработчик ввода логина ---
 document.getElementById('username-input').addEventListener('input', function(event) {
     const username = event.target.value;
     document.getElementById('display-username').textContent = username || 'Ваш Логин';

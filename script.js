@@ -1,6 +1,6 @@
 // --- ВАЖНО: Замените 'YOUR_IMGBB_API_KEY' на ваш реальный API Key от ImgBB ---
 // Если вы не хотите использовать ImgBB, просто оставьте пустую строку.
-const IMGBB_API_KEY = '6126df32bf922494dc6458dbecfd25df'; // <-- ЗАМЕНИТЕ НА ВАШ КЛЮЧ ИЛИ ОСТАВЬТЕ ПУСТЫМ
+const IMGBB_API_KEY = 'YOUR_IMGBB_API_KEY'; // <-- ЗАМЕНИТЕ НА ВАШ КЛЮЧ ИЛИ ОСТАВЬТЕ ПУСТЫМ
 
 // --- Маппинг бейджей на классы ---
 const badgeClassMap = {
@@ -69,8 +69,8 @@ function generatePassportHTML(avatarUrl, username, badges, countries) { // Пр�
     return `
         <!-- Упрощённый контейнер -->
         <div style="background: linear-gradient(135deg, #1e1e1e, #121212); padding: 20px; text-align: center; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.5);">
-            <!-- Аватар без сложного фона, но с canvas -->
-            <div id="avatar-canvas-container" style="width: 180px; height: 180px; margin: 0 auto 20px; position: relative; overflow: hidden; border: 3px solid white; box-shadow: 0 0 15px rgba(255,255,255,0.3);"></div>
+            <!-- Аватар без сложного фона -->
+            <img src="${avatarUrl}" alt="Avatar Preview" class="avatar-img" style="width: 180px; height: 180px; border-radius: 0; object-fit: cover; border: 3px solid white; box-shadow: 0 0 15px rgba(255,255,255,0.3); margin: 0 auto 20px; display: block;">
             
             <!-- Логотип проекта в правом верхнем углу -->
             <img src="xlogo.png" alt="Project Logo" class="project-logo" style="position: absolute; top: 10px; right: 10px; width: 140px; height: 50px; z-index: 10;">
@@ -100,41 +100,8 @@ function generatePassportHTML(avatarUrl, username, badges, countries) { // Пр�
     // --- /Возвращаем НОВУЮ HTML-структуру ---
 }
 
-// --- Функция для рисования аватара на canvas (НОВАЯ) ---
-async function drawAvatarOnCanvas(avatarUrl, containerId) {
-    return new Promise((resolve, reject) => {
-        const container = document.getElementById(containerId);
-        if (!container) {
-            reject(new Error(`Container with id '${containerId}' not found.`));
-            return;
-        }
-
-        // Создаем новый canvas
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-
-        // Устанавливаем размеры canvas
-        canvas.width = 180;
-        canvas.height = 180;
-
-        // Создаем Image объект
-        const img = new Image();
-        img.onload = () => {
-            // Рисуем изображение на canvas, заполняя его полностью
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            // Добавляем canvas в контейнер
-            container.appendChild(canvas);
-            resolve(); // Разрешаем промис
-        };
-        img.onerror = () => {
-            reject(new Error('Failed to load image for canvas.'));
-        };
-        img.src = avatarUrl; // Устанавливаем Data URL
-    });
-}
-
 // --- Обработчик кнопки "Создать" ---
-document.getElementById('generate-btn').addEventListener('click', async function() { // Делаем асинхронным
+document.getElementById('generate-btn').addEventListener('click', function() {
     const { avatarUrl, username, selectedBadges, selectedCountries } = getPassportData(); // Получаем и страны
     if (selectedBadges.length === 0) {
         alert('Please select at least one badge.');
@@ -147,14 +114,6 @@ document.getElementById('generate-btn').addEventListener('click', async function
     // Показать сгенерированную секцию, скрыть редактор
     document.getElementById('editor-section').style.display = 'none';
     document.getElementById('generated-section').style.display = 'block';
-
-    // После генерации HTML, рисуем аватар на canvas
-    try {
-        await drawAvatarOnCanvas(avatarUrl, 'avatar-canvas-container');
-        console.log("Аватар успешно нарисован на canvas.");
-    } catch (error) {
-        console.error("Ошибка при рисовании аватара на canvas:", error);
-    }
 });
 
 // --- Обработчик кнопки "Назад" ---
@@ -166,29 +125,50 @@ document.getElementById('back-btn').addEventListener('click', function() {
 // --- Обработчик кнопки "Скачать как PNG" (ОБНОВЛЁННЫЙ) ---
 document.getElementById('download-btn').addEventListener('click', async function() { // Добавлен async
     const generatedPassportElement = document.getElementById('generated-passport');
-    const generatedAvatarImg = generatedPassportElement.querySelector('.avatar-img'); // Это может быть null, так как мы заменили img на canvas
+    const generatedAvatarImg = generatedPassportElement.querySelector('.avatar-img');
 
-    // Мы больше не используем .avatar-img, поэтому проверяем наличие контейнера
-    const avatarCanvasContainer = generatedPassportElement.querySelector('#avatar-canvas-container');
-    if (!avatarCanvasContainer) {
-        console.error("html2canvas: Не найден контейнер для аватара (#avatar-canvas-container) в #generated-passport.");
+    if (!generatedAvatarImg) {
+        console.error("html2canvas: Не найден элемент аватара (.avatar-img) в #generated-passport.");
         return;
     }
 
-    // Проверяем, что есть хотя бы один canvas внутри контейнера
-    const canvasInContainer = avatarCanvasContainer.querySelector('canvas');
-    if (!canvasInContainer) {
-        console.error("html2canvas: В контейнере аватара (#avatar-canvas-container) не найден элемент canvas.");
-        return;
+    // Проверяем, что src - это Data URL или локальный путь
+    const generatedAvatarSrc = generatedAvatarImg.src;
+    console.log("Скачивание. Data URL аватара в сгенерированном элементе:", generatedAvatarSrc);
+
+    if (generatedAvatarSrc.startsWith('image')) { // Проверяем Data URL
+        console.log("html2canvas: src аватара является Data URL, ожидаем его загрузку.");
+        // Создаём промис, который разрешится, когда изображение загрузится
+        const imageLoadPromise = new Promise((resolve, reject) => {
+            generatedAvatarImg.onload = resolve;
+            generatedAvatarImg.onerror = () => reject(new Error('Failed to load avatar image for canvas'));
+            // Если изображение уже загружено, onload не сработает. Проверим.
+            if (generatedAvatarImg.complete && generatedAvatarImg.naturalHeight !== 0) {
+                 // Уже загружено, разрешаем промис
+                 resolve();
+            }
+        });
+
+        try {
+            // Ждём загрузки изображения
+            await imageLoadPromise;
+            console.log("html2canvas: Изображение аватара загружено, запускаем html2canvas.");
+        } catch (error) {
+            console.error("html2canvas: Ошибка загрузки аватара:", error);
+            return; // Не продолжаем, если аватар не загрузился
+        }
+    } else {
+        console.warn("html2canvas: src аватара не является Data URL. Это может повлиять на отображение в PNG в зависимости от политики CORS.", generatedAvatarSrc);
+        // В этом случае мы полагаемся на html2canvas, но ошибка CORS может всё равно возникнуть.
     }
 
-    // Запускаем html2canvas
+    // Теперь вызываем html2canvas, зная, что изображение загружено (если это Data URL)
     html2canvas(generatedPassportElement, {
         backgroundColor: '#121212', // Установить фон для холста
         scale: 2, // Повысить качество (по умолчанию 1)
-        // logging: true, // Включить логгирование html2canvas (для отладки)
-        // allowTaint: true, // Позволить "загрязнение" (может помочь с изображениями)
-        // useCORS: true,   // Использовать CORS (не поможет с Data URL, но на всякий случай)
+        allowTaint: true, // Позволить "загрязнение" (может помочь с изображениями)
+        useCORS: true,   // Использовать CORS (не поможет с Data URL, но на всякий случай)
+        logging: true, // Включить логгирование html2canvas (для отладки)
     }).then(canvas => {
         const link = document.createElement('a');
         link.download = 'my-discord-passport.png';

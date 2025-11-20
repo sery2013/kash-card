@@ -180,10 +180,12 @@ body {
 
 .badges-selection {
     margin: 15px 0;
+    text-align: left; /* <-- Изменение: выравнивание по левому краю */
 }
 
 .badges-selection h3 {
     margin-bottom: 10px;
+    text-align: left; /* <-- Изменение: выравнивание по левому краю */
 }
 
 .checkbox-label {
@@ -191,6 +193,7 @@ body {
     margin: 5px 0;
     font-size: 0.9em;
     cursor: pointer;
+    text-align: left; /* <-- Изменение: выравнивание по левому краю */
 }
 
 .checkbox-label input {

@@ -7,55 +7,75 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Верхняя панель: логотип и имя -->
-        <div class="header-bar">
-            <span class="username">ByHappyHearts</span>
-            <img src="assets/logo.svg" alt="Rise Logo" class="rise-logo">
-        </div>
-
-        <!-- Основная карточка паспорта -->
-        <div class="passport-card">
-            <!-- Фоновое изображение (можно заменить на вашу картинку) -->
-            <div class="card-background">
-                <img id="avatar-preview" src="assets/default-avatar.png" alt="Avatar Preview" class="avatar-img">
+    <!-- Основной редактор -->
+    <div id="editor-section" class="section">
+        <div class="container">
+            <div class="header-bar">
+                <span class="username">ByHappyHearts</span>
+                <img src="assets/logo.svg" alt="Rise Logo" class="rise-logo">
             </div>
 
-            <!-- Кнопка загрузки аватара -->
-            <input type="file" id="avatar-upload" accept="image/*" style="display:none;">
-            <button class="upload-btn" onclick="document.getElementById('avatar-upload').click()">Загрузить Аватар</button>
+            <div class="passport-card">
+                <div class="card-background">
+                    <img id="avatar-preview" src="assets/default-avatar.png" alt="Avatar Preview" class="avatar-img">
+                </div>
 
-            <!-- Статус загрузки -->
-            <p id="upload-status" class="status"></p>
+                <input type="file" id="avatar-upload" accept="image/*" style="display:none;">
+                <button class="upload-btn" onclick="document.getElementById('avatar-upload').click()">Загрузить Аватар</button>
+                <p id="upload-status" class="status"></p>
 
-            <!-- Поле ввода логина -->
-            <div class="username-input-wrapper">
-                <label for="username-input">Логин:</label>
-                <input type="text" id="username-input" placeholder="Введите ваш Discord логин">
-            </div>
+                <div class="username-input-wrapper">
+                    <label for="username-input">Логин:</label>
+                    <input type="text" id="username-input" placeholder="Введите ваш Discord логин">
+                </div>
+                <div id="display-username" class="display-username">Ваш Логин</div>
 
-            <!-- Отображаемый логин -->
-            <div id="display-username" class="display-username">Ваш Логин</div>
+                <!-- Выбор бейджей -->
+                <div class="badges-selection">
+                    <h3>Выберите бейджи:</h3>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="CONTENT CREATOR" class="badge-checkbox"> CONTENT CREATOR
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="SHREDDED" class="badge-checkbox"> SHREDDED
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="Rice" class="badge-checkbox"> Rice
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="Noob" class="badge-checkbox"> Noob
+                    </label>
+                    <!-- Пример добавления нового бейджа -->
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="VIP" class="badge-checkbox"> VIP
+                    </label>
+                </div>
 
-            <!-- Бейдж "Content Creator" -->
-            <div class="badge-container">
-                <div class="badge badge-primary">CONTENT CREATOR</div>
-            </div>
+                <div class="activity-description">
+                    Crafting pixels, pumping vibes, farming retweets 🌀
+                </div>
 
-            <!-- Описание активности -->
-            <div class="activity-description">
-                Crafting pixels, pumping vibes, farming retweets 🌀
-            </div>
-
-            <!-- Бейджики (SHREDDED, Rice, Noob) -->
-            <div class="badges-row">
-                <div class="badge badge-purple">SHREDDED</div>
-                <div class="badge badge-orange">Rice</div>
-                <div class="badge badge-pink">Noob</div>
+                <button id="generate-btn" class="generate-btn">Создать</button>
             </div>
         </div>
     </div>
 
+    <!-- Сгенерированный паспорт (скрыт по умолчанию) -->
+    <div id="generated-section" class="section" style="display: none;">
+        <div class="container">
+            <h2>Ваш готовый паспорт:</h2>
+            <div id="generated-passport" class="generated-passport">
+                <!-- Содержимое будет генерироваться скриптом -->
+            </div>
+            <div class="generated-actions">
+                <button id="download-btn" class="action-btn download-btn">Скачать как PNG</button>
+                <button id="twitter-btn" class="action-btn twitter-btn">Поделиться в Twitter</button>
+                <button id="back-btn" class="action-btn back-btn">Назад к редактору</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

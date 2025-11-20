@@ -462,12 +462,124 @@ body {
 }
 
 
-/* --- Стили для логотипа проекта в сгенерированном паспорте --- */
-.generated-passport .project-logo {
+
+/* --- Стили для контейнера аватара и текста --- */
+.generated-passport .avatar-and-text-container {
+    display: flex;
+    align-items: flex-start; /* Выравнивание по верхнему краю */
+    gap: 20px; /* Отступ между аватаром и текстом */
+}
+
+/* --- Стили для обёртки аватара --- */
+.generated-passport .avatar-wrapper {
+    width: 180px; /* Ширина аватара */
+    height: 180px; /* Высота аватара */
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Градиентный фон */
+    background: linear-gradient(135deg, #555, #333);
+    /* Узор сетки */
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    z-index: 1;
+}
+
+.generated-passport .avatar-wrapper::before {
+    content: "";
     position: absolute;
-    top: 10px; /* Отступ сверху */
-    right: 10px; /* Отступ справа */
-    width: 40px; /* Ширина логотипа */
-    height: 40px; /* Высота логотипа */
-    z-index: 10; /* Убедимся, что логотип поверх других элементов */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Повторяющийся узор сетки */
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    z-index: 2;
+}
+
+/* --- Стили для самого аватара --- */
+.generated-passport .avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    object-fit: cover;
+    border: 3px solid white;
+    box-shadow: 0 0 15px rgba(255,255,255,0.3);
+    position: relative;
+    z-index: 3;
+}
+
+/* --- Стили для блока с текстом (имя, бейджи, флаги, описание) --- */
+.generated-passport .text-content {
+    flex: 1; /* Занимает доступное пространство */
+    text-align: center;
+}
+
+.generated-passport .display-username {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+.generated-passport .badges-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.generated-passport .badge {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 0;
+    font-weight: bold;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 5px;
+    cursor: default;
+}
+
+.generated-passport .countries-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.generated-passport .generated-country-flag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 0;
+}
+
+.generated-passport .generated-flag-icon {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+}
+
+.generated-passport .country-name {
+    font-size: 0.7em;
+    color: #cccccc;
+}
+
+.generated-passport .activity-description {
+    font-size: 0.8em;
+    margin: 15px 0;
+    line-height: 1.5;
+    color: #cccccc;
+    font-style: italic;
 }

@@ -17,7 +17,7 @@ body {
 
 .container {
     width: 100%;
-    max-width: 1200px; /* Увеличим максимальную ширину */
+    max-width: 1200px;
 }
 
 .editor-layout {
@@ -28,7 +28,7 @@ body {
 
 .left-panel {
     flex: 1;
-    min-width: 300px; /* Минимальная ширина для панели */
+    min-width: 300px;
     background-color: #1a1a1a;
     padding: 20px;
     border-radius: 16px;
@@ -41,12 +41,12 @@ body {
     flex: 2;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Выравнивание по верху */
+    align-items: flex-start;
 }
 
 .passport-preview {
     width: 100%;
-    max-width: 500px; /* Ширина как у поста в твиттер */
+    max-width: 500px;
     background-color: #1a1a1a;
     padding: 10px;
     border-radius: 12px 12px 0 0;
@@ -164,7 +164,7 @@ body {
 
 .flag-svg {
     width: 20px;
-    height: 12px; /* Сохраняем пропорции */
+    height: 12px;
     margin-right: 8px;
     border: 1px solid #444;
     border-radius: 2px;
@@ -178,7 +178,7 @@ body {
     border-radius: 24px;
     cursor: pointer;
     font-weight: bold;
-    margin-top: auto; /* Прижимаем кнопку к низу */
+    margin-top: auto;
     font-size: 1em;
     transition: all 0.3s ease;
     width: 100%;
@@ -195,7 +195,7 @@ body {
     padding: 20px;
     text-align: center;
     box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-    margin-top: 10px; /* Отступ от header-bar */
+    margin-top: 10px;
 }
 
 .card-background {
@@ -283,6 +283,42 @@ body {
     font-style: italic;
 }
 
+/* --- Новые стили для блоков слева --- */
+.badges-country-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.select-badges-box,
+.select-country-box {
+    background-color: #2a2a2a;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #444;
+}
+
+.select-badges-box h3,
+.select-country-box h3 {
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.placeholder-box {
+    background-color: #2a2a2a;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #444;
+    min-height: 150px; /* Высота как на скрине */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #888;
+    font-size: 0.9em;
+    /* Можно добавить текст или изображение */
+    /* Например: <img src="assets/default-avatar.png" alt="Placeholder" style="max-width: 80%; max-height: 80%;"> */
+}
+
 /* --- Generated Passport Styles --- */
 .generated-passport {
     background: linear-gradient(135deg, #1e1e1e, #121212);
@@ -293,7 +329,7 @@ body {
     margin: 20px 0;
     position: relative;
     overflow: hidden;
-    max-width: 500px; /* Чтобы соответствовало превью */
+    max-width: 500px;
 }
 
 .generated-passport .card-background {

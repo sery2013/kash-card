@@ -21,6 +21,7 @@ function getPassportData() {
 
 // --- Функция генерации HTML для паспорта ---
 function generatePassportHTML(avatarUrl, username, badges) {
+    console.log("Генерация паспорта. Data URL аватара:", avatarUrl); // Добавим лог
     let badgesHTML = '';
     badges.forEach(badgeText => {
         const className = badgeClassMap[badgeText] || "badge-primary"; // Если нет в мапе, используем primary
@@ -68,19 +69,32 @@ document.getElementById('back-btn').addEventListener('click', function() {
 // --- Обработчик кнопки "Скачать как PNG" ---
 document.getElementById('download-btn').addEventListener('click', function() {
     const generatedPassportElement = document.getElementById('generated-passport');
+    // Получаем Data URL из сгенерированного элемента (для уверенности)
+    const generatedAvatarImg = generatedPassportElement.querySelector('.avatar-img');
+    const generatedAvatarSrc = generatedAvatarImg ? generatedAvatarImg.src : null;
+    console.log("Скачивание. Data URL аватара в сгенерированном элементе:", generatedAvatarSrc); // Добавим лог
+
+    // Проверяем, что src - это Data URL
+    if (generatedAvatarSrc && generatedAvatarSrc.startsWith('data:image')) {
+        console.log("html2canvas: src аватара является Data URL, всё ок.");
+    } else {
+        console.error("html2canvas: src аватара НЕ является Data URL! Это может быть проблемой.", generatedAvatarSrc);
+    }
 
     html2canvas(generatedPassportElement, {
         backgroundColor: '#121212', // Установить фон для холста
         scale: 2, // Повысить качество (по умолчанию 1)
-        // Важно: использовать allowTaint и useCORS может помочь с внешними изображениями, но не гарантирует.
-        // Для Data URL они не обязательны.
-        // allowTaint: true,
-        // useCORS: true,
+        // Попробуем отключить z-index в превью, если он мешает
+        // logging: true, // Включить логгирование html2canvas (для отладки)
+        // allowTaint: true, // Позволить "загрязнение" (может помочь с изображениями)
+        // useCORS: true,   // Использовать CORS (не поможет с Data URL, но на всякий случай)
     }).then(canvas => {
         const link = document.createElement('a');
         link.download = 'my-discord-passport.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
+    }).catch(err => {
+        console.error("Ошибка при создании canvas:", err);
     });
 });
 
@@ -120,6 +134,7 @@ document.getElementById('avatar-upload').addEventListener('change', async functi
     reader.onload = async function(readerEvent) {
         // 1. Устанавливаем Data URL в src аватара для немедленного отображения и html2canvas
         const dataUrl = readerEvent.target.result;
+        console.log("Загрузка аватара. Получен Data URL:", dataUrl.substring(0, 50) + "..."); // Лог первых 50 символов
         document.getElementById('avatar-preview').src = dataUrl;
 
         // 2. Сохраняем Data URL в localStorage

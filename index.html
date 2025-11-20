@@ -10,75 +10,73 @@
     <!-- Main Editor -->
     <div id="editor-section" class="section">
         <div class="container">
-            <!-- Логотип Rise размещён вверху -->
             <div class="header-bar">
                 <img src="assets/logo.svg" alt="Rise Logo" class="rise-logo">
             </div>
-            <!-- Основной редактор паспорта -->
             <div class="passport-card">
-                <!-- Wrapper for avatar with background -->
-                <div class="card-background">
-                    <img id="avatar-preview" src="default-avatar.png" alt="Avatar Preview" class="avatar-img">
+                <!-- Обёртка для аватара и кнопки загрузки -->
+                <div class="avatar-upload-box">
+                    <div class="card-background">
+                        <img id="avatar-preview" src="default-avatar.png" alt="Avatar Preview" class="avatar-img">
+                    </div>
+                    <input type="file" id="avatar-upload" accept="image/*" style="display:none;">
+                    <button class="upload-btn" onclick="document.getElementById('avatar-upload').click()">Upload Avatar</button>
+                    <p id="upload-status" class="status"></p>
                 </div>
-                <input type="file" id="avatar-upload" accept="image/*" style="display:none;">
-                <button class="upload-btn" onclick="document.getElementById('avatar-upload').click()">Upload Avatar</button>
-                <p id="upload-status" class="status"></p>
                 <div class="username-input-wrapper">
                     <label for="username-input">Username:</label>
                     <input type="text" id="username-input" placeholder="Enter your Discord username">
                 </div>
                 <div id="display-username" class="display-username">Your Username</div>
-                <!-- Container for Badges and Country columns -->
-                <div class="selection-columns">
-                    <!-- Badge Selection (Left Column) -->
-                    <div class="badges-selection">
-                        <h3>Select Badges:</h3>
-                        <label class="checkbox-label">
-                            <input type="checkbox" value="CONTENT CREATOR" class="badge-checkbox"> CONTENT CREATOR
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" value="SHREDDED" class="badge-checkbox"> SHREDDED
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" value="Rice" class="badge-checkbox"> Rice
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" value="Noob" class="badge-checkbox"> Noob
-                        </label>
-                        <!-- Example of adding a new badge -->
-                        <label class="checkbox-label">
-                            <input type="checkbox" value="VIP" class="badge-checkbox"> VIP
-                        </label>
-                    </div>
-                    <!-- Country Selection (Right Column) -->
-                    <div id="country-selector">
-                        <h3>Select Country:</h3>
-                        <label class="country-option">
-                            <input type="checkbox" value="Russia" class="country-checkbox"> <span class="flag-icon">🇷🇺</span> Russia
-                        </label>
-                        <label class="country-option">
-                            <input type="checkbox" value="United States" class="country-checkbox"> <span class="flag-icon">🇺🇸</span> United States
-                        </label>
-                        <label class="country-option">
-                            <input type="checkbox" value="China" class="country-checkbox"> <span class="flag-icon">🇨🇳</span> China
-                        </label>
-                        <label class="country-option">
-                            <input type="checkbox" value="Indonesia" class="country-checkbox"> <span class="flag-icon">🇮🇩</span> Indonesia
-                        </label>
-                        <label class="country-option">
-                            <input type="checkbox" value="Ukraine" class="country-checkbox"> <span class="flag-icon">🇺🇦</span> Ukraine
-                        </label>
-                        <label class="country-option">
-                            <input type="checkbox" value="Nigeria" class="country-checkbox"> <span class="flag-icon">🇳🇬</span> Nigeria
-                        </label>
-                    </div>
-                </div> <!-- /selection-columns -->
+                <!-- Badge Selection -->
+                <div class="badges-selection">
+                    <h3>Select Badges:</h3>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="CONTENT CREATOR" class="badge-checkbox"> CONTENT CREATOR
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="SHREDDED" class="badge-checkbox"> SHREDDED
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="Rice" class="badge-checkbox"> Rice
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="Noob" class="badge-checkbox"> Noob
+                    </label>
+                    <!-- Example of adding a new badge -->
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="VIP" class="badge-checkbox"> VIP
+                    </label>
+                </div>
                 <div class="activity-description">
                     Crafting pixels, pumping vibes, farming retweets 🌀
                 </div>
                 <button id="generate-btn" class="generate-btn">Create</button>
             </div>
-        </div> <!-- /container -->
+            <!-- Новая колонка с выбором стран -->
+            <div id="country-selector">
+                <h3>Select Country:</h3>
+                <label class="country-option">
+                    <input type="checkbox" value="Russia" class="country-checkbox"> <span class="flag-icon">🇷🇺</span> Russia
+                </label>
+                <label class="country-option">
+                    <input type="checkbox" value="United States" class="country-checkbox"> <span class="flag-icon">🇺🇸</span> United States
+                </label>
+                <label class="country-option">
+                    <input type="checkbox" value="China" class="country-checkbox"> <span class="flag-icon">🇨🇳</span> China
+                </label>
+                <label class="country-option">
+                    <input type="checkbox" value="Indonesia" class="country-checkbox"> <span class="flag-icon">🇮🇩</span> Indonesia
+                </label>
+                <label class="country-option">
+                    <input type="checkbox" value="Ukraine" class="country-checkbox"> <span class="flag-icon">🇺🇦</span> Ukraine
+                </label>
+                <label class="country-option">
+                    <input type="checkbox" value="Nigeria" class="country-checkbox"> <span class="flag-icon">🇳🇬</span> Nigeria
+                </label>
+            </div>
+            <!-- /Колонка с выбором стран -->
+        </div> <!-- Закрывающий div для .container -->
     </div>
     <!-- Generated Passport (hidden by default) -->
     <div id="generated-section" class="section" style="display: none;">

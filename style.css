@@ -342,6 +342,39 @@ body {
     cursor: default;
 }
 
+/* --- Стили для ряда флагов стран в сгенерированном паспорте --- */
+.generated-passport .countries-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px; /* Отступ между флагами */
+    margin-top: 15px; /* Отступ сверху */
+}
+
+/* --- Стили для контейнера одного флага страны в сгенерированном паспорте --- */
+.generated-passport .generated-country-flag {
+    display: inline-flex; /* Используем flex для выравнивания иконки и текста */
+    align-items: center; /* Выравнивание по центру по вертикали */
+    gap: 4px; /* Небольшой отступ между иконкой и текстом */
+    /* Можно добавить стили для фона, рамки, скругления, если нужно */
+    /* padding: 4px; */
+    /* border: 1px solid #444; */
+    /* border-radius: 8px; */
+}
+
+/* --- Стили для SVG-иконки флага в сгенерированном паспорте --- */
+.generated-passport .generated-flag-icon {
+    width: 24px; /* Убедимся, что иконка нужного размера */
+    height: 24px;
+    vertical-align: middle; /* Выровняем по центру строки */
+}
+
+/* --- Стили для названия страны рядом с флагом --- */
+.generated-passport .country-name {
+    font-size: 0.8em; /* Немного уменьшим размер текста */
+    color: #cccccc; /* Цвет текста */
+}
+
 .generated-passport .activity-description {
     font-size: 0.9em;
     margin: 15px 0;

@@ -14,15 +14,13 @@
                 <img src="assets/logo.svg" alt="Rise Logo" class="rise-logo">
             </div>
             <div class="passport-card">
-                <!-- Обёртка для аватара и кнопки загрузки -->
-                <div class="avatar-upload-box">
-                    <div class="card-background">
-                        <img id="avatar-preview" src="default-avatar.png" alt="Avatar Preview" class="avatar-img">
-                    </div>
-                    <input type="file" id="avatar-upload" accept="image/*" style="display:none;">
-                    <button class="upload-btn" onclick="document.getElementById('avatar-upload').click()">Upload Avatar</button>
-                    <p id="upload-status" class="status"></p>
+                <!-- Wrapper for avatar with background -->
+                <div class="card-background">
+                    <img id="avatar-preview" src="default-avatar.png" alt="Avatar Preview" class="avatar-img">
                 </div>
+                <input type="file" id="avatar-upload" accept="image/*" style="display:none;">
+                <button class="upload-btn" onclick="document.getElementById('avatar-upload').click()">Upload Avatar</button>
+                <p id="upload-status" class="status"></p>
                 <div class="username-input-wrapper">
                     <label for="username-input">Username:</label>
                     <input type="text" id="username-input" placeholder="Enter your Discord username">

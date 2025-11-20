@@ -4,6 +4,7 @@
     box-sizing: border-box;
 }
 
+/* Центрируем и ограничиваем ширину всего содержимого, как пост в Twitter */
 body {
     background-color: #0d0d0d;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -13,11 +14,16 @@ body {
     align-items: center;
     min-height: 100vh;
     padding: 20px;
+    /* max-width: 600px; /* Ширина как у поста в Twitter */
+    /* margin: 0 auto; /* Центрирование */
+    width: 100%; /* Убедимся, что body занимает всю ширину, а контейнер ограничивает */
 }
 
+/* Обновляем .container, чтобы он соответствовал новой ширине */
 .container {
     width: 100%;
-    max-width: 500px;
+    max-width: 580px; /* Немного меньше 600px, чтобы учесть padding */
+    margin: 0 auto; /* Центрируем контейнер внутри body */
 }
 
 .header-bar {
@@ -50,28 +56,48 @@ body {
     overflow: hidden;
 }
 
+/* Обновляем стили для фона аватара */
 .card-background {
     position: relative;
-    width: 100%;
-    height: 200px;
-    margin-bottom: 20px;
-    border-radius: 12px;
+    width: 180px; /* Устанавливаем фиксированную ширину */
+    height: 180px; /* Устанавливаем фиксированную высоту */
+    margin: 0 auto 20px; /* Центрируем по горизонтали и добавляем отступ снизу */
+    border-radius: 0; /* Убираем скругления */
     overflow: hidden;
-    background: linear-gradient(45deg, #6e45e2, #88d3ce);
     display: flex;
     justify-content: center;
     align-items: center;
+    /* Градиентный фон */
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    /* Псевдоэлемент для создания узора сетки */
+    z-index: 1; /* Для правильного наложения псевдоэлемента */
 }
 
+.card-background::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Повторяющийся узор сетки */
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px; /* Размер ячейки узора */
+    z-index: 2; /* Поверх градиента, но под аватаром */
+}
+
+/* Обновляем стили для самого аватара */
 .avatar-img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid white;
-    box-shadow: 0 0 15px rgba(255,255,255,0.3);
+    width: 100%; /* Занимает всю ширину card-background */
+    height: 100%; /* Занимает всю высоту card-background */
+    border-radius: 0; /* Убираем скругления у изображения */
+    object-fit: cover; /* Изображение заполняет контейнер, обрезая лишнее */
+    border: 3px solid white; /* Белая рамка */
+    box-shadow: 0 0 15px rgba(255,255,255,0.3); /* Тень */
     position: relative;
-    z-index: 2;
+    z-index: 3; /* Поверх фона и узора */
 }
 
 .upload-btn {
@@ -193,25 +219,46 @@ body {
     overflow: hidden;
 }
 
+/* Обновляем стили для фона аватара в сгенерированном паспорте */
 .generated-passport .card-background {
     background: linear-gradient(45deg, #6e45e2, #88d3ce);
-    height: 200px;
-    border-radius: 12px;
+    width: 180px; /* Устанавливаем фиксированную ширину */
+    height: 180px; /* Устанавливаем фиксированную высоту */
+    border-radius: 0; /* Убираем скругления */
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
+    margin: 0 auto 20px; /* Центрируем по горизонтали и добавляем отступ снизу */
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
 }
 
-.generated-passport .avatar-img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid white;
-    box-shadow: 0 0 15px rgba(255,255,255,0.3);
-    position: relative;
+.generated-passport .card-background::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Повторяющийся узор сетки */
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px; /* Размер ячейки узора */
     z-index: 2;
+}
+
+/* Обновляем стили для самого аватара в сгенерированном паспорте */
+.generated-passport .avatar-img {
+    width: 100%; /* Занимает всю ширину card-background */
+    height: 100%; /* Занимает всю высоту card-background */
+    border-radius: 0; /* Убираем скругления у изображения */
+    object-fit: cover; /* Изображение заполняет контейнер, обрезая лишнее */
+    border: 3px solid white; /* Белая рамка */
+    box-shadow: 0 0 15px rgba(255,255,255,0.3); /* Тень */
+    position: relative;
+    z-index: 3; /* Поверх фона и узора */
 }
 
 .generated-passport .display-username {
@@ -318,23 +365,21 @@ body {
     width: 100%;
 }
 
-
-/* Центрируем основной контент и задаем ширину, как у твиттеровского поста */
+/* Удаляем старые стили центрирования, которые дублировались и были некорректны */
+/* 
 body {
-    /* Можно добавить, если основной контейнер - body */
     margin: 0;
     padding: 20px;
-    max-width: 800px; /* Ширина как у поста в Twitter */
-    margin-left: auto; /* Центрирование по горизонтали */
-    margin-right: auto; /* Центрирование по горизонтали */
-    box-sizing: border-box; /* Включаем padding и border в расчёт ширины */
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
 }
 
-/* Если у вас есть конкретный контейнер, например, div с id="main" или class="container" */
-/* Замените #main на реальный селектор вашего контейнера */
 #main {
-    max-width: 800px; /* Ширина как у поста в Twitter */
-    margin: 0 auto;   /* Центрирование по горизонтали */
-    padding: 20px;    /* Отступы внутри контейнера */
-    box-sizing: border-box; /* Включаем padding в расчёт ширины */
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
 }
+*/

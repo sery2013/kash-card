@@ -1,513 +1,216 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+// --- ВАЖНО: Замените 'YOUR_IMGBB_API_KEY' на ваш реальный API Key от ImgBB ---
+// Если вы не хотите использовать ImgBB, просто оставьте пустую строку.
+const IMGBB_API_KEY = 'YOUR_IMGBB_API_KEY'; // <-- ЗАМЕНИТЕ НА ВАШ КЛЮЧ ИЛИ ОСТАВЬТЕ ПУСТЫМ
+
+// --- Маппинг бейджей на классы ---
+const badgeClassMap = {
+    "CONTENT CREATOR": "badge-primary",
+    "SHREDDED": "badge-purple",
+    "Rice": "badge-orange",
+    "Noob": "badge-pink",
+    "VIP": "badge-purple" // Пример: можно добавить другие
+};
+
+// --- Функция для получения выбранного аватара и логина ---
+function getPassportData() {
+    const avatarUrl = document.getElementById('avatar-preview').src;
+    const username = document.getElementById('display-username').textContent;
+    const selectedBadges = Array.from(document.querySelectorAll('.badge-checkbox:checked')).map(cb => cb.value);
+    // Добавим получение выбранных стран, если нужно использовать в генерации
+    // const selectedCountries = Array.from(document.querySelectorAll('.country-checkbox:checked')).map(cb => cb.value);
+    return { avatarUrl, username, selectedBadges };
 }
 
-/* Центрируем и ограничиваем ширину всего содержимого, как пост в Twitter */
-body {
-    background-color: #0d0d0d;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: white;
-    display: flex; /* Используем flex для центрирования */
-    justify-content: center; /* Центрируем по горизонтали */
-    align-items: center; /* Центрируем по вертикали */
-    min-height: 100vh; /* Минимальная высота окна браузера */
-    padding: 20px;
-    width: 100%; /* Убедимся, что body занимает всю ширину */
+// --- Функция генерации HTML для паспорта ---
+function generatePassportHTML(avatarUrl, username, badges) {
+    console.log("Генерация паспорта. Data URL аватара:", avatarUrl); // Добавим лог
+    let badgesHTML = '';
+    badges.forEach(badgeText => {
+        const className = badgeClassMap[badgeText] || "badge-primary"; // Если нет в мапе, используем primary
+        badgesHTML += `<div class="badge ${className}">${badgeText}</div>`;
+    });
+    return `
+        <div class="card-background">
+            <img src="${avatarUrl}" alt="Avatar Preview" class="avatar-img">
+        </div>
+        <div class="display-username">${username}</div>
+        <div class="badges-row">
+            ${badgesHTML}
+        </div>
+        <div class="activity-description">
+            Crafting pixels, pumping vibes, farming retweets 🌀
+        </div>
+    `;
 }
 
-/* Обновляем .container, чтобы он соответствовал новой ширине */
-.container {
-    width: 100%;
-    max-width: 620px; /* Немного больше 580px, чтобы учесть padding */
-    margin: 0 auto; /* Центрируем контейнер внутри body */
-    padding: 20px;
-    box-sizing: border-box;
-    /* Сделаем контейнер flex, чтобы разместить .passport-card и #language-selector в ряд */
-    display: flex;
-    flex-direction: row; /* Элементы в ряд */
-    gap: 20px; /* Отступ между колонками */
-}
+// --- Обработчик кнопки "Создать" ---
+document.getElementById('generate-btn').addEventListener('click', function() {
+    const { avatarUrl, username, selectedBadges } = getPassportData();
+    if (selectedBadges.length === 0) {
+        alert('Please select at least one badge.');
+        return;
+    }
+    const generatedHTML = generatePassportHTML(avatarUrl, username, selectedBadges);
+    const generatedPassportElement = document.getElementById('generated-passport');
+    generatedPassportElement.innerHTML = generatedHTML;
+    // Показать сгенерированную секцию, скрыть редактор
+    document.getElementById('editor-section').style.display = 'none';
+    document.getElementById('generated-section').style.display = 'block';
+});
 
-.header-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 20px;
-    background-color: #1a1a1a;
-    border-radius: 12px 12px 0 0;
-    margin-bottom: 10px;
-}
+// --- Обработчик кнопки "Назад" ---
+document.getElementById('back-btn').addEventListener('click', function() {
+    document.getElementById('generated-section').style.display = 'none';
+    document.getElementById('editor-section').style.display = 'block';
+});
 
-.username {
-    font-size: 16px;
-    font-weight: 600;
-}
+// --- Обработчик кнопки "Скачать как PNG" ---
+document.getElementById('download-btn').addEventListener('click', function() {
+    const generatedPassportElement = document.getElementById('generated-passport');
+    // Получаем Data URL из сгенерированного элемента (для уверенности)
+    const generatedAvatarImg = generatedPassportElement.querySelector('.avatar-img');
+    const generatedAvatarSrc = generatedAvatarImg ? generatedAvatarImg.src : null;
+    console.log("Скачивание. Data URL аватара в сгенерированном элементе:", generatedAvatarSrc); // Добавим лог
+    // Проверяем, что src - это Data URL
+    if (generatedAvatarSrc && generatedAvatarSrc.startsWith('image')) {
+        console.log("html2canvas: src аватара является Data URL, всё ок.");
+    } else {
+        console.error("html2canvas: src аватара НЕ является Data URL! Это может быть проблемой.", generatedAvatarSrc);
+    }
+    html2canvas(generatedPassportElement, {
+        backgroundColor: '#121212', // Установить фон для холста
+        scale: 2, // Повысить качество (по умолчанию 1)
+        // Попробуем отключить z-index в превью, если он мешает
+        // logging: true, // Включить логгирование html2canvas (для отладки)
+        // allowTaint: true, // Позволить "загрязнение" (может помочь с изображениями)
+        // useCORS: true,   // Использовать CORS (не поможет с Data URL, но на всякий случай)
+    }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'my-discord-passport.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    }).catch(err => {
+        console.error("Ошибка при создании canvas:", err);
+    });
+});
 
-.rise-logo {
-    width: 24px;
-    height: auto;
-}
+// --- Обработчик кнопки "Поделиться в Twitter" ---
+document.getElementById('twitter-btn').addEventListener('click', function() {
+    // Для простоты, отправляем текстовый твит.
+    // Загрузка изображения в твит требует серверного кода или сложных клиентских API.
+    const { username } = getPassportData();
+    const tweetText = encodeURIComponent(`Check out my new Discord Passport! @${username} #Discord #Passport`);
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
+    window.open(twitterUrl, '_blank');
+});
 
-.passport-card {
-    background: linear-gradient(135deg, #1e1e1e, #121212);
-    border-radius: 16px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-    position: relative;
-    overflow: hidden;
+// --- Обработчик загрузки аватара (обновлённый) ---
+document.getElementById('avatar-upload').addEventListener('change', async function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const statusElement = document.getElementById('upload-status');
+    statusElement.textContent = 'Uploading...';
+    statusElement.className = ''; // Сброс классов
+    if (!file.type.match('image.*')) {
+        statusElement.textContent = 'Please select an image.';
+        statusElement.className = 'error';
+        return;
+    }
+    if (file.size > 16 * 1024 * 1024) {
+        statusElement.textContent = 'File is too large. Maximum 16 MB.';
+        statusElement.className = 'error';
+        return;
+    }
+    // --- НОВАЯ ЛОГИКА: Преобразование в Data URL ---
+    const reader = new FileReader();
+    reader.onload = async function(readerEvent) {
+        // 1. Устанавливаем Data URL в src аватара для немедленного отображения и html2canvas
+        const dataUrl = readerEvent.target.result;
+        console.log("Загрузка аватара. Получен Data URL:", dataUrl.substring(0, 50) + "..."); // Лог первых 50 символов
+        document.getElementById('avatar-preview').src = dataUrl;
+        // 2. Сохраняем Data URL в localStorage
+        localStorage.setItem('userAvatarDataUrl', dataUrl);
+        // 3. Пытаемся загрузить файл на ImgBB (только если API Key задан)
+        if (IMGBB_API_KEY) {
+            const formData = new FormData();
+            formData.append('image', file); // Отправляем оригинальный файл
+            formData.append('key', IMGBB_API_KEY);
+            try {
+                const response = await fetch('https://api.imgbb.com/1/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+                const result = await response.json();
+                if (result.success && result.data && result.data.url) {
+                    const imageUrl = result.data.url;
+                    console.log('Image successfully uploaded to ImgBB:', imageUrl);
+                    // Заменяем Data URL на URL от ImgBB (опционально, но позволяет использовать постоянную ссылку)
+                    document.getElementById('avatar-preview').src = imageUrl;
+                    // Сохраняем URL от ImgBB в localStorage
+                    localStorage.setItem('userAvatarUrl', imageUrl);
+                    statusElement.textContent = 'Uploaded to ImgBB!';
+                    statusElement.className = 'success';
+                } else {
+                    console.error('ImgBB API Error:', result);
+                    statusElement.textContent = `Upload to ImgBB failed: ${result.error?.message || 'Unknown error'}`;
+                    statusElement.className = 'error';
+                    // Если загрузка на ImgBB не удалась, остаёмся с Data URL
+                    // (который уже установлен и сохранён в localStorage)
+                }
+            } catch (error) {
+                console.error('Network error during ImgBB upload:', error);
+                statusElement.textContent = `Network error during ImgBB upload: ${error.message}`;
+                statusElement.className = 'error';
+                // Если загрузка на ImgBB не удалась, остаёмся с Data URL
+                // (который уже установлен и сохранён в localStorage)
+            }
+        } else {
+            // Если API Key не задан, просто используем Data URL
+            statusElement.textContent = 'Avatar loaded locally (Data URL).';
+            statusElement.className = 'success';
+        }
+    };
+    reader.onerror = function() {
+        console.error('Error reading file.');
+        statusElement.textContent = 'Error reading file.';
+        statusElement.className = 'error';
+    };
+    reader.readAsDataURL(file); // Начинаем чтение файла как Data URL
+});
 
-    /* --- Новые стили: Размеры как у поста в Twitter --- */
-    width: 580px; /* Фиксированная ширина */
-    min-height: 380px; /* Минимальная высота */
-    margin: 0 auto; /* Центрируем внутри .container */
-    flex: 1; /* Занимает доступное пространство */
-}
+// --- Обработчик ввода логина ---
+document.getElementById('username-input').addEventListener('input', function(event) {
+    const username = event.target.value;
+    document.getElementById('display-username').textContent = username || 'Your Username';
+    localStorage.setItem('userUsername', username);
+});
 
-/* Обновляем стили для фона аватара */
-.card-background {
-    position: relative;
-    width: 180px; /* Устанавливаем фиксированную ширину */
-    height: 180px; /* Устанавливаем фиксированную высоту */
-    margin: 0 auto 20px; /* Центрируем по горизонтали и добавляем отступ снизу */
-    border-radius: 0; /* Убираем скругления */
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+// --- УДАЛЕНО: Восстановление данных при загрузке страницы ---
+// document.addEventListener('DOMContentLoaded', function() {
+//     const savedAvatarUrl = localStorage.getItem('userAvatarUrl');
+//     const savedAvatarDataUrl = localStorage.getItem('userAvatarDataUrl');
+//
+//     if (savedAvatarUrl) {
+//         document.getElementById('avatar-preview').src = savedAvatarUrl;
+//         console.log('Avatar restored from ImgBB URL.');
+//     } else if (savedAvatarDataUrl) {
+//         document.getElementById('avatar-preview').src = savedAvatarDataUrl;
+//         console.log('Avatar restored from Data URL.');
+//     }
+//
+//     const savedUsername = localStorage.getItem('userUsername');
+//     if (savedUsername) {
+//         document.getElementById('username-input').value = savedUsername;
+//         document.getElementById('display-username').textContent = savedUsername;
+//     }
+// });
 
-    /* --- ГРАДИЕНТНЫЙ ФОН --- */
-    /* Вариант 1: Серый градиент (по умолчанию) */
-    background: linear-gradient(135deg, #555, #333);
-
-    /* Варианты для выбора (раскомментируйте нужный, закомментировав предыдущий):
-    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); // Сине-фиолетовый
-    background: linear-gradient(135deg, #6e45e2, #88d3ce); // Фиолетово-бирюзовый
-    background: linear-gradient(45deg, #FF9966, #FF5E62); // Оранжево-красный
-    background: linear-gradient(45deg, #F093FB, #F5576C); // Розово-пурпурный
-    background: linear-gradient(135deg, #4A00E0, #8E2DE2); // Темно-синий
-    */
-
-    /* Псевдоэлемент для создания узора сетки */
-    z-index: 1; /* Для правильного наложения псевдоэлемента */
-}
-
-.card-background::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    /* Повторяющийся узор сетки */
-    background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-    background-size: 20px 20px; /* Размер ячейки узора */
-    z-index: 2; /* Поверх градиента, но под аватаром */
-}
-
-/* Обновляем стили для самого аватара */
-.avatar-img {
-    width: 100%; /* Занимает всю ширину card-background */
-    height: 100%; /* Занимает всю высоту card-background */
-    border-radius: 0; /* Убираем скругления у изображения */
-    object-fit: cover; /* Изображение заполняет контейнер, обрезая лишнее */
-    border: 3px solid white; /* Белая рамка */
-    box-shadow: 0 0 15px rgba(255,255,255,0.3); /* Тень */
-    position: relative;
-    z-index: 3; /* Поверх фона и узора */
-}
-
-.upload-btn {
-    background: linear-gradient(to right, #7928CA, #FF0080);
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: bold;
-    margin: 10px 0;
-    transition: all 0.3s ease;
-}
-
-.upload-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(255,255,255,0.5);
-}
-
-.status {
-    font-size: 0.85em;
-    margin: 5px 0;
-    padding: 5px;
-    border-radius: 4px;
-    opacity: 0.8;
-}
-
-.status.success { color: #4CAF50; }
-.status.error { color: #FF5252; }
-
-.username-input-wrapper {
-    margin: 15px 0;
-}
-
-.username-input-wrapper label {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 0.9em;
-}
-
-.username-input-wrapper input {
-    width: 100%;
-    padding: 10px;
-    background: #2a2a2a;
-    border: 1px solid #444;
-    border-radius: 8px;
-    color: white;
-    font-size: 1em;
-}
-
-.username-input-wrapper input:focus {
-    outline: none;
-    border-color: #FF0080;
-    box-shadow: 0 0 5px rgba(255,0,128,0.3);
-}
-
-.display-username {
-    font-size: 1.5em;
-    font-weight: bold;
-    margin: 15px 0;
-    color: #ffffff;
-    letter-spacing: 0.5px;
-}
-
-.badges-selection {
-    margin: 15px 0;
-    text-align: left; /* <-- Изменение: выравнивание по левому краю */
-}
-
-.badges-selection h3 {
-    margin-bottom: 10px;
-    text-align: left; /* <-- Изменение: выравнивание по левому краю */
-}
-
-.checkbox-label {
-    display: block;
-    margin: 5px 0;
-    font-size: 0.9em;
-    cursor: pointer;
-    text-align: left; /* <-- Изменение: выравнивание по левому краю */
-}
-
-.checkbox-label input {
-    margin-right: 8px;
-}
-
-.generate-btn {
-    background: linear-gradient(to right, #00C9FF, #92FE9D);
-    color: #000;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 24px;
-    cursor: pointer;
-    font-weight: bold;
-    margin: 15px 0;
-    font-size: 1em;
-    transition: all 0.3s ease;
-}
-
-.generate-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(146,254,157,0.5);
-}
-
-.activity-description {
-    font-size: 0.9em;
-    margin: 15px 0;
-    line-height: 1.5;
-    color: #cccccc;
-    font-style: italic;
-}
-
-/* --- Стили для сгенерированного паспорта --- */
-.generated-passport {
-    background: linear-gradient(135deg, #1e1e1e, #121212);
-    border-radius: 16px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-    margin: 20px 0;
-    position: relative;
-    overflow: hidden;
-
-    /* --- Новые стили: Размеры как у поста в Twitter --- */
-    width: 580px; /* Фиксированная ширина */
-    min-height: 380px; /* Минимальная высота */
-    margin: 0 auto; /* Центрируем внутри .container */
-}
-
-/* Обновляем стили для фона аватара в сгенерированном паспорте */
-.generated-passport .card-background {
-    /* Применяем те же стили, что и для основного .card-background */
-    position: relative;
-    width: 180px; /* Устанавливаем фиксированную ширину */
-    height: 180px; /* Устанавливаем фиксированную высоту */
-    border-radius: 0; /* Убираем скругления */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto 20px; /* Центрируем по горизонтали и добавляем отступ снизу */
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-
-    /* --- ГРАДИЕНТНЫЙ ФОН (тот же, что и для основного) --- */
-    /* Вариант 1: Серый градиент (по умолчанию) */
-    background: linear-gradient(135deg, #555, #333);
-
-    /* Варианты для выбора (раскомментируйте нужный, закомментировав предыдущий):
-    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); // Сине-фиолетовый
-    background: linear-gradient(135deg, #6e45e2, #88d3ce); // Фиолетово-бирюзовый
-    background: linear-gradient(45deg, #FF9966, #FF5E62); // Оранжево-красный
-    background: linear-gradient(45deg, #F093FB, #F5576C); // Розово-пурпурный
-    background: linear-gradient(135deg, #4A00E0, #8E2DE2); // Темно-синий
-    */
-}
-
-.generated-passport .card-background::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    /* Повторяющийся узор сетки */
-    background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-    background-size: 20px 20px; /* Размер ячейки узора */
-    z-index: 2;
-}
-
-/* Обновляем стили для самого аватара в сгенерированном паспорте */
-.generated-passport .avatar-img {
-    width: 100%; /* Занимает всю ширину card-background */
-    height: 100%; /* Занимает всю высоту card-background */
-    border-radius: 0; /* Убираем скругления у изображения */
-    object-fit: cover; /* Изображение заполняет контейнер, обрезая лишнее */
-    border: 3px solid white; /* Белая рамка */
-    box-shadow: 0 0 15px rgba(255,255,255,0.3); /* Тень */
-    position: relative;
-    z-index: 3; /* Поверх фона и узора */
-}
-
-.generated-passport .display-username {
-    font-size: 1.5em;
-    font-weight: bold;
-    margin: 10px 0;
-    color: #ffffff;
-    letter-spacing: 0.5px;
-}
-
-.generated-passport .badges-row {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 15px;
-}
-
-.generated-passport .badge {
-    display: inline-block;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-weight: bold;
-    font-size: 0.9em;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin: 5px;
-    cursor: default;
-}
-
-.generated-passport .activity-description {
-    font-size: 0.9em;
-    margin: 15px 0;
-    line-height: 1.5;
-    color: #cccccc;
-    font-style: italic;
-}
-
-/* --- Стили для кнопок действий --- */
-.generated-actions {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.action-btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 1em;
-    transition: all 0.3s ease;
-}
-
-.download-btn {
-    background: linear-gradient(to right, #4CAF50, #8BC34A);
-    color: white;
-}
-
-.twitter-btn {
-    background: linear-gradient(to right, #1DA1F2, #1DA1F2);
-    color: white;
-}
-
-.back-btn {
-    background: linear-gradient(to right, #9E9E9E, #616161);
-    color: white;
-}
-
-.action-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 10px rgba(255,255,255,0.3);
-}
-
-/* --- Стили для бейджей --- */
-.badge-primary {
-    background: linear-gradient(to right, #00C9FF, #92FE9D);
-    color: #000;
-    box-shadow: 0 0 10px rgba(146,254,157,0.5);
-}
-
-.badge-purple {
-    background: linear-gradient(to right, #8E2DE2, #4A00E0);
-    color: white;
-    box-shadow: 0 0 10px rgba(142,45,226,0.5);
-}
-
-.badge-orange {
-    background: linear-gradient(to right, #FF9966, #FF5E62);
-    color: white;
-    box-shadow: 0 0 10px rgba(255,94,98,0.5);
-}
-
-.badge-pink {
-    background: linear-gradient(to right, #F093FB, #F5576C);
-    color: white;
-    box-shadow: 0 0 10px rgba(245,87,108,0.5);
-}
-
-/* --- Для скрытия/показа секций --- */
-.section {
-    width: 100%;
-}
-
-/* --- Стили для колонки выбора языков --- */
-#language-selector {
-    width: 200px; /* Фиксированная ширина для колонки */
-    background-color: #1a1a1a; /* Светлее основного фона */
-    border-radius: 12px;
-    padding: 15px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* Отступ между опциями */
-    height: fit-content; /* Высота по содержимому */
-    align-self: flex-start; /* Выравнивание по верхнему краю основного контента */
-}
-
-#language-selector h3 {
-    margin: 0 0 10px 0;
-    font-size: 1.1em;
-    text-align: center; /* Центрируем заголовок */
-    color: #ffffff; /* Цвет текста */
-}
-
-.lang-option {
-    display: flex;
-    align-items: center;
-    gap: 8px; /* Отступ между иконкой и текстом */
-    padding: 5px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.lang-option:hover {
-    background-color: #2a2a2a; /* Цвет при наведении */
-}
-
-.lang-icon {
-    width: 24px;
-    height: 24px;
-    flex-shrink: 0; /* Не сжимать иконку */
-}
-
-.lang-option span {
-    font-size: 0.9em;
-    color: #ffffff; /* Цвет текста */
-}
-
-/* Удаляем старые стили центрирования, которые дублировались и были некорректны */
-/* 
-body {
-    margin: 0;
-    padding: 20px;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    box-sizing: border-box;
-}
-
-#main {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    box-sizing: border-box;
-}
-*/
-
-/* --- УДАЛЕНО: Простые стили для html2canvas (теперь не нужны) ---
-.card-background-simple {
-    position: relative;
-    width: 180px;
-    height: 180px;
-    margin: 0 auto 20px;
-    border-radius: 0;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #555, #333);
-}
-
-.card-background-simple::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-    background-size: 20px 20px;
-    z-index: 2;
-}
-
-.avatar-img-simple {
-    width: 100%;
-    height: 100%;
-    border-radius: 0;
-    object-fit: cover;
-    border: 3px solid white;
-    box-shadow: 0 0 15px rgba(255,255,255,0.3);
-    position: relative;
-    z-index: 3;
-}
-*/
+// --- УДАЛЕНО: Обработчик выбора языка ---
+// document.querySelectorAll('.lang-option').forEach(option => {
+//     option.addEventListener('click', function() {
+//         const lang = this.getAttribute('data-lang');
+//         console.log(`Language selected: ${lang}`);
+//         // Здесь можно добавить логику переключения языка интерфейса
+//         // Пока просто выводим в консоль
+//     });
+// });

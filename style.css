@@ -194,32 +194,35 @@ body {
 }
 
 /* Right Column: Country Selection */
+/* --- Стили для колонки выбора стран --- */
 #country-selector {
-    flex: 1; /* Занимает доступное пространство */
-    text-align: left; /* Выравнивание по левому краю */
-    background-color: #1a1a1a; /* Фон для колонки */
-    padding: 15px;
+    width: 200px; /* Фиксированная ширина для колонки */
+    background-color: #1a1a1a; /* Светлее основного фона */
     border-radius: 12px;
+    padding: 15px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Отступ между опциями */
+    height: fit-content; /* Высота по содержимому */
+    align-self: flex-start; /* Выравнивание по верхнему краю основного контента */
 }
-
 #country-selector h3 {
-    margin-bottom: 10px;
-    text-align: left;
+    margin: 0 0 10px 0;
+    font-size: 1.1em;
+    text-align: center; /* Центрируем заголовок */
+    color: #ffffff; /* Цвет текста */
 }
-
 .country-option {
     display: block;
     margin: 5px 0;
     font-size: 0.9em;
     cursor: pointer;
-    text-align: left;
+    text-align: left; /* Выравнивание по левому краю */
 }
-
 .country-option input {
     margin-right: 8px;
 }
-
 .flag-icon {
     margin-right: 5px;
     font-size: 1.2em; /* Увеличим размер флага */

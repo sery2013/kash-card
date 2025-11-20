@@ -1,5 +1,5 @@
 // --- ВАЖНО: Замените 'YOUR_IMGBB_API_KEY' на ваш реальный API Key от ImgBB ---
-const IMGBB_API_KEY = 'ad61a98d4f9c86037cadf72d08171c20'; // <-- ПОМЕНЯЙТЕ ЭТО
+const IMGBB_API_KEY = 'YOUR_IMGBB_API_KEY';
 
 document.getElementById('avatar-upload').addEventListener('change', async function(event) {
     const file = event.target.files[0];
@@ -9,14 +9,14 @@ document.getElementById('avatar-upload').addEventListener('change', async functi
     statusElement.textContent = 'Загрузка...';
     statusElement.className = ''; // Сброс классов
 
-    // Проверка типа файла (опционально)
+    // Проверка типа файла
     if (!file.type.match('image.*')) {
         statusElement.textContent = 'Пожалуйста, выберите изображение.';
         statusElement.className = 'error';
         return;
     }
 
-    // Проверка размера файла (например, не более 16 МБ)
+    // Проверка размера файла (макс 16 МБ)
     if (file.size > 16 * 1024 * 1024) {
         statusElement.textContent = 'Файл слишком большой. Максимум 16 МБ.';
         statusElement.className = 'error';
@@ -39,7 +39,7 @@ document.getElementById('avatar-upload').addEventListener('change', async functi
             const imageUrl = result.data.url;
             console.log('Изображение успешно загружено на ImgBB:', imageUrl);
 
-            // Обновляем изображение на странице
+            // Обновляем изображение аватара
             document.getElementById('avatar-preview').src = imageUrl;
 
             // Сохраняем URL в localStorage

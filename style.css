@@ -399,7 +399,7 @@ body {
     border-radius: 0; /* Квадратные края */
     cursor: pointer;
     font-weight: bold;
-    font-size: 0.5em; /* Уменьшенный размер шрифта (примерно вдвое) */
+    font-size: 0.8em; /* Уменьшенный размер шрифта (примерно вдвое) */
     transition: all 0.3s ease;
     /* margin-top: 10px; /* Отступ сверху для каждой кнопки (альтернатива) */
 }

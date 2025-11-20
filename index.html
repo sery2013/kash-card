@@ -11,7 +11,7 @@
     <div id="editor-section" class="section">
         <div class="container">
             <div class="header-bar">
-                <img src="logo.png" alt="Rise Logo" class="rise-logo">
+                <img src="assets/logo.svg" alt="Rise Logo" class="rise-logo">
             </div>
 
             <div class="passport-card">
@@ -57,7 +57,63 @@
 
                 <button id="generate-btn" class="generate-btn">Create</button>
             </div>
-        </div>
+
+            <!-- Новая колонка с выбором языков -->
+            <div id="language-selector">
+                <h3>Languages</h3>
+                <div class="lang-option" data-lang="ru">
+                    <svg class="lang-icon" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="#0039a6" d="M0 0h24v8h-24z"/>
+                        <path fill="#ffffff" d="M0 8h24v8h-24z"/>
+                        <path fill="#d52b1e" d="M0 16h24v8h-24z"/>
+                    </svg>
+                    <span>Русский</span>
+                </div>
+                <div class="lang-option" data-lang="en">
+                    <svg class="lang-icon" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="#012169" d="M0 0h24v24H0z"/>
+                        <path fill="#ffffff" d="M0 0l12 12L24 0h-6V24H6V0H0z"/>
+                        <path fill="#ffffff" d="M0 12l12-12v24L0 12z"/>
+                        <path fill="#c8102e" d="M0 8l8 4v4L0 16V8z"/>
+                        <path fill="#c8102e" d="M16 8v8l8-4V8h-8z"/>
+                        <path fill="#c8102e" d="M8 0h8v8H8V0z"/>
+                        <path fill="#c8102e" d="M8 16h8v8H8v-8z"/>
+                    </svg>
+                    <span>English</span>
+                </div>
+                <div class="lang-option" data-lang="zh">
+                    <svg class="lang-icon" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="#de2910" d="M0 0h24v24H0z"/>
+                        <path fill="#ffde00" d="M2.25 4.5L3.75 6l-.75.75L2.25 6l-.75-.75L2.25 4.5zm1.5 0l.75 1.5h1.5l-.75-1.5h-1.5zm1.5 1.5l.75 1.5-.75.75-.75-.75.75-1.5zm1.5-1.5l.75 1.5h1.5l-.75-1.5h-1.5zm1.5 1.5l.75 1.5-.75.75-.75-.75.75-1.5z"/>
+                    </svg>
+                    <span>中文</span>
+                </div>
+                <div class="lang-option" data-lang="id">
+                    <svg class="lang-icon" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="#ce1126" d="M0 0h24v12h-24z"/>
+                        <path fill="#ffffff" d="M0 12h24v12h-24z"/>
+                    </svg>
+                    <span>Indonesia</span>
+                </div>
+                <div class="lang-option" data-lang="uk">
+                    <svg class="lang-icon" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="#0057b7" d="M0 0h24v12h-24z"/>
+                        <path fill="#ffd700" d="M0 12h24v12h-24z"/>
+                    </svg>
+                    <span>Українська</span>
+                </div>
+                <div class="lang-option" data-lang="ng">
+                    <svg class="lang-icon" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="#008751" d="M0 0h8v24H0z"/>
+                        <path fill="#ffffff" d="M8 0h8v24H8z"/>
+                        <path fill="#008751" d="M16 0h8v24h-8z"/>
+                    </svg>
+                    <span>Nigeria</span>
+                </div>
+            </div>
+            <!-- /Колонка с выбором языков -->
+
+        </div> <!-- Закрывающий div для .container -->
     </div>
 
     <!-- Generated Passport (hidden by default) -->

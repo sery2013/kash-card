@@ -1,6 +1,6 @@
 // --- ВАЖНО: Замените 'YOUR_IMGBB_API_KEY' на ваш реальный API Key от ImgBB ---
 // Если вы не хотите использовать ImgBB, просто оставьте пустую строку.
-const IMGBB_API_KEY = 'YOUR_IMGBB_API_KEY'; // <-- ЗАМЕНИТЕ НА ВАШ КЛЮЧ ИЛИ ОСТАВЬТЕ ПУСТЫМ
+const IMGBB_API_KEY = '6126df32bf922494dc6458dbecfd25df'; // <-- ЗАМЕНИТЕ НА ВАШ КЛЮЧ ИЛИ ОСТАВЬТЕ ПУСТЫМ
 
 // --- Маппинг бейджей на классы ---
 const badgeClassMap = {

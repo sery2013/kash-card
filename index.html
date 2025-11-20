@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <!-- Editor Section -->
+    <div id="editor-section" class="container">
         <div class="editor-layout">
             <!-- Left Panel: Controls -->
             <div class="left-panel">
@@ -31,25 +32,7 @@
                     <p id="upload-status" class="status"></p>
                 </div>
 
-                <div class="controls-section">
-                    <h3>Select Badges:</h3>
-                    <label class="checkbox-label">
-                        <input type="checkbox" value="CONTENT CREATOR" class="badge-checkbox"> CONTENT CREATOR
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" value="SHREDDED" class="badge-checkbox"> SHREDDED
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" value="Rice" class="badge-checkbox"> Rice
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" value="Noob" class="badge-checkbox"> Noob
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" value="VIP" class="badge-checkbox"> VIP
-                    </label>
-                </div>
-
+                <!-- Поменяли местами с Country -->
                 <div class="controls-section">
                     <h3>Select Country:</h3>
                     <div class="country-selector">
@@ -94,6 +77,26 @@
                             China
                         </label>
                     </div>
+                </div>
+
+                <!-- Теперь бейджи -->
+                <div class="controls-section">
+                    <h3>Select Badges:</h3>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="CONTENT CREATOR" class="badge-checkbox"> CONTENT CREATOR
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="SHREDDED" class="badge-checkbox"> SHREDDED
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="Rice" class="badge-checkbox"> Rice
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="Noob" class="badge-checkbox"> Noob
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="VIP" class="badge-checkbox"> VIP
+                    </label>
                 </div>
 
                 <button id="generate-btn" class="generate-btn">Generate Passport</button>

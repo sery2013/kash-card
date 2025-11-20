@@ -11,7 +11,7 @@
     <div id="editor-section" class="section">
         <div class="container">
             <div class="header-bar">
-                <span class="username">ByHappyHearts</span>
+                <!-- Удаляем span.username -->
                 <img src="assets/logo.svg" alt="Rise Logo" class="rise-logo">
             </div>
 
@@ -78,78 +78,5 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="script.js"></script>
-
-    <!-- Добавляем JavaScript для обработки событий -->
-    <script>
-        // Обработчик загрузки аватара
-        document.getElementById('avatar-upload').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            // Проверяем, что файл - изображение
-            if (!file.type.startsWith('image/')) {
-                document.getElementById('upload-status').textContent = 'Пожалуйста, выберите изображение.';
-                document.getElementById('upload-status').className = 'status error';
-                return;
-            }
-
-            // Создаем FileReader для чтения файла
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                // Устанавливаем Data URL в src изображения
-                document.getElementById('avatar-preview').src = event.target.result;
-                document.getElementById('upload-status').textContent = 'Аватар успешно загружен!';
-                document.getElementById('upload-status').className = 'status success';
-            };
-            reader.onerror = function() {
-                document.getElementById('upload-status').textContent = 'Ошибка при загрузке аватара.';
-                document.getElementById('upload-status').className = 'status error';
-            };
-
-            // Читаем файл как Data URL
-            reader.readAsDataURL(file);
-        });
-
-        // Обработчик кнопки "Создать"
-        document.getElementById('generate-btn').addEventListener('click', function() {
-            const username = document.getElementById('username-input').value.trim();
-            const avatarSrc = document.getElementById('avatar-preview').src;
-            const badges = Array.from(document.querySelectorAll('.badge-checkbox:checked')).map(cb => cb.value);
-            const activityDesc = document.querySelector('.activity-description').textContent;
-
-            // Заполняем сгенерированный паспорт
-            const generatedPassport = document.getElementById('generated-passport');
-            generatedPassport.innerHTML = `
-                <div class="card-background">
-                    <img src="${avatarSrc}" alt="Generated Avatar" class="avatar-img">
-                </div>
-                <div class="display-username">${username || 'Ваш Логин'}</div>
-                <div class="badges-row">
-                    ${badges.map(badge => `<span class="badge badge-primary">${badge}</span>`).join('')}
-                </div>
-                <div class="activity-description">${activityDesc}</div>
-            `;
-
-            // Показываем сгенерированный паспорт
-            document.getElementById('editor-section').style.display = 'none';
-            document.getElementById('generated-section').style.display = 'block';
-        });
-
-        // Обработчик скачивания
-        document.getElementById('download-btn').addEventListener('click', function() {
-            html2canvas(document.getElementById('generated-passport')).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'discord-passport.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            });
-        });
-
-        // Обработчик возврата
-        document.getElementById('back-btn').addEventListener('click', function() {
-            document.getElementById('editor-section').style.display = 'block';
-            document.getElementById('generated-section').style.display = 'none';
-        });
-    </script>
 </body>
 </html>

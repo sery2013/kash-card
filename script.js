@@ -1,4 +1,5 @@
 // --- ВАЖНО: Замените 'YOUR_IMGBB_API_KEY' на ваш реальный API Key от ImgBB ---
+// Если вы не хотите использовать ImgBB, просто оставьте пустую строку.
 const IMGBB_API_KEY = 'YOUR_IMGBB_API_KEY'; // <-- ЗАМЕНИТЕ НА ВАШ КЛЮЧ ИЛИ ОСТАВЬТЕ ПУСТЫМ
 
 // --- Маппинг бейджей на классы ---
@@ -7,7 +8,7 @@ const badgeClassMap = {
     "SHREDDED": "badge-purple",
     "Rice": "badge-orange",
     "Noob": "badge-pink",
-    "VIP": "badge-purple"
+    "VIP": "badge-purple" // Пример: можно добавить другие
 };
 
 // --- Функция для получения выбранного аватара и логина ---
@@ -18,11 +19,12 @@ function getPassportData() {
     return { avatarUrl, username, selectedBadges };
 }
 
-// --- Функция генерации HTML для паспорта (для отображения) ---
+// --- Функция генерации HTML для паспорта ---
 function generatePassportHTML(avatarUrl, username, badges) {
+    console.log("Генерация паспорта. Data URL аватара:", avatarUrl); // Добавим лог
     let badgesHTML = '';
     badges.forEach(badgeText => {
-        const className = badgeClassMap[badgeText] || "badge-primary";
+        const className = badgeClassMap[badgeText] || "badge-primary"; // Если нет в мапе, используем primary
         badgesHTML += `<div class="badge ${className}">${badgeText}</div>`;
     });
 
@@ -40,37 +42,12 @@ function generatePassportHTML(avatarUrl, username, badges) {
     `;
 }
 
-// --- Функция генерации HTML для скачивания (простая версия) ---
-function generateDownloadHTML(avatarUrl, username, badges) {
-    let badgesHTML = '';
-    badges.forEach(badgeText => {
-        const className = badgeClassMap[badgeText] || "badge-primary";
-        // Для скачивания используем простые стили
-        badgesHTML += `<span style="background: linear-gradient(to right, #00C9FF, #92FE9D); color: #000; padding: 8px 16px; border-radius: 20px; font-weight: bold; margin: 5px; display: inline-block;">${badgeText}</span>`;
-    });
-
-    return `
-        <div style="width: 580px; min-height: 380px; background: #121212; padding: 20px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.5); border-radius: 16px;">
-            <div style="width: 180px; height: 180px; margin: 0 auto 20px; background: linear-gradient(135deg, #555, #333); display: flex; justify-content: center; align-items: center; border-radius: 0; overflow: hidden;">
-                <img src="${avatarUrl}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; border: 3px solid white; box-shadow: 0 0 15px rgba(255,255,255,0.3);">
-            </div>
-            <div style="font-size: 1.5em; font-weight: bold; margin: 10px 0; color: #ffffff; letter-spacing: 0.5px;">${username}</div>
-            <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 15px;">
-                ${badgesHTML}
-            </div>
-            <div style="font-size: 0.9em; margin: 15px 0; line-height: 1.5; color: #cccccc; font-style: italic;">
-                Crafting pixels, pumping vibes, farming retweets 🌀
-            </div>
-        </div>
-    `;
-}
-
 // --- Обработчик кнопки "Создать" ---
 document.getElementById('generate-btn').addEventListener('click', function() {
     const { avatarUrl, username, selectedBadges } = getPassportData();
 
     if (selectedBadges.length === 0) {
-        alert('Пожалуйста, выберите хотя бы один бейдж.');
+        alert('Please select at least one badge.');
         return;
     }
 
@@ -91,44 +68,42 @@ document.getElementById('back-btn').addEventListener('click', function() {
 
 // --- Обработчик кнопки "Скачать как PNG" ---
 document.getElementById('download-btn').addEventListener('click', function() {
-    const { avatarUrl, username, selectedBadges } = getPassportData();
+    const generatedPassportElement = document.getElementById('generated-passport');
+    // Получаем Data URL из сгенерированного элемента (для уверенности)
+    const generatedAvatarImg = generatedPassportElement.querySelector('.avatar-img');
+    const generatedAvatarSrc = generatedAvatarImg ? generatedAvatarImg.src : null;
+    console.log("Скачивание. Data URL аватара в сгенерированном элементе:", generatedAvatarSrc); // Добавим лог
 
-    // Создаем временный элемент для html2canvas
-    const tempDiv = document.createElement('div');
-    tempDiv.style.position = 'absolute';
-    tempDiv.style.left = '-9999px';
-    tempDiv.style.top = '-9999px';
-    tempDiv.style.width = '580px';
-    tempDiv.style.height = '380px';
-    tempDiv.innerHTML = generateDownloadHTML(avatarUrl, username, selectedBadges);
+    // Проверяем, что src - это Data URL
+    if (generatedAvatarSrc && generatedAvatarSrc.startsWith('image')) {
+        console.log("html2canvas: src аватара является Data URL, всё ок.");
+    } else {
+        console.error("html2canvas: src аватара НЕ является Data URL! Это может быть проблемой.", generatedAvatarSrc);
+    }
 
-    document.body.appendChild(tempDiv);
-
-    // Генерируем canvas
-    html2canvas(tempDiv, {
-        backgroundColor: '#121212',
-        scale: 2,
+    html2canvas(generatedPassportElement, {
+        backgroundColor: '#121212', // Установить фон для холста
+        scale: 2, // Повысить качество (по умолчанию 1)
+        // Попробуем отключить z-index в превью, если он мешает
+        // logging: true, // Включить логгирование html2canvas (для отладки)
+        // allowTaint: true, // Позволить "загрязнение" (может помочь с изображениями)
+        // useCORS: true,   // Использовать CORS (не поможет с Data URL, но на всякий случай)
     }).then(canvas => {
         const link = document.createElement('a');
         link.download = 'my-discord-passport.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
-
-        // Удаляем временный элемент
-        document.body.removeChild(tempDiv);
     }).catch(err => {
         console.error("Ошибка при создании canvas:", err);
-        // Удаляем временный элемент даже в случае ошибки
-        if (tempDiv.parentNode) {
-            document.body.removeChild(tempDiv);
-        }
     });
 });
 
 // --- Обработчик кнопки "Поделиться в Twitter" ---
 document.getElementById('twitter-btn').addEventListener('click', function() {
+    // Для простоты, отправляем текстовый твит.
+    // Загрузка изображения в твит требует серверного кода или сложных клиентских API.
     const { username } = getPassportData();
-    const tweetText = encodeURIComponent(`Проверь мой новый Discord Passport! @${username} #Discord #Passport`);
+    const tweetText = encodeURIComponent(`Check out my new Discord Passport! @${username} #Discord #Passport`);
     const twitterUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
     window.open(twitterUrl, '_blank');
 });
@@ -139,30 +114,36 @@ document.getElementById('avatar-upload').addEventListener('change', async functi
     if (!file) return;
 
     const statusElement = document.getElementById('upload-status');
-    statusElement.textContent = 'Загрузка...';
-    statusElement.className = '';
+    statusElement.textContent = 'Uploading...';
+    statusElement.className = ''; // Сброс классов
 
     if (!file.type.match('image.*')) {
-        statusElement.textContent = 'Пожалуйста, выберите изображение.';
+        statusElement.textContent = 'Please select an image.';
         statusElement.className = 'error';
         return;
     }
 
     if (file.size > 16 * 1024 * 1024) {
-        statusElement.textContent = 'Файл слишком большой. Максимум 16 МБ.';
+        statusElement.textContent = 'File is too large. Maximum 16 MB.';
         statusElement.className = 'error';
         return;
     }
 
+    // --- НОВАЯ ЛОГИКА: Преобразование в Data URL ---
     const reader = new FileReader();
     reader.onload = async function(readerEvent) {
+        // 1. Устанавливаем Data URL в src аватара для немедленного отображения и html2canvas
         const dataUrl = readerEvent.target.result;
+        console.log("Загрузка аватара. Получен Data URL:", dataUrl.substring(0, 50) + "..."); // Лог первых 50 символов
         document.getElementById('avatar-preview').src = dataUrl;
+
+        // 2. Сохраняем Data URL в localStorage
         localStorage.setItem('userAvatarDataUrl', dataUrl);
 
+        // 3. Пытаемся загрузить файл на ImgBB (только если API Key задан)
         if (IMGBB_API_KEY) {
             const formData = new FormData();
-            formData.append('image', file);
+            formData.append('image', file); // Отправляем оригинальный файл
             formData.append('key', IMGBB_API_KEY);
 
             try {
@@ -175,54 +156,66 @@ document.getElementById('avatar-upload').addEventListener('change', async functi
 
                 if (result.success && result.data && result.data.url) {
                     const imageUrl = result.data.url;
+                    console.log('Image successfully uploaded to ImgBB:', imageUrl);
+
+                    // Заменяем Data URL на URL от ImgBB (опционально, но позволяет использовать постоянную ссылку)
                     document.getElementById('avatar-preview').src = imageUrl;
+                    // Сохраняем URL от ImgBB в localStorage
                     localStorage.setItem('userAvatarUrl', imageUrl);
-                    statusElement.textContent = 'Загружено на ImgBB!';
+
+                    statusElement.textContent = 'Uploaded to ImgBB!';
                     statusElement.className = 'success';
                 } else {
-                    console.error('Ошибка от ImgBB API:', result);
-                    statusElement.textContent = `Ошибка загрузки на ImgBB: ${result.error?.message || 'Неизвестная ошибка'}`;
+                    console.error('ImgBB API Error:', result);
+                    statusElement.textContent = `Upload to ImgBB failed: ${result.error?.message || 'Unknown error'}`;
                     statusElement.className = 'error';
+                    // Если загрузка на ImgBB не удалась, остаёмся с Data URL
+                    // (который уже установлен и сохранён в localStorage)
                 }
             } catch (error) {
-                console.error('Ошибка при запросе к ImgBB API:', error);
-                statusElement.textContent = `Ошибка сети при загрузке на ImgBB: ${error.message}`;
+                console.error('Network error during ImgBB upload:', error);
+                statusElement.textContent = `Network error during ImgBB upload: ${error.message}`;
                 statusElement.className = 'error';
+                // Если загрузка на ImgBB не удалась, остаёмся с Data URL
+                // (который уже установлен и сохранён в localStorage)
             }
         } else {
-            statusElement.textContent = 'Аватар загружен локально (Data URL).';
+            // Если API Key не задан, просто используем Data URL
+            statusElement.textContent = 'Avatar loaded locally (Data URL).';
             statusElement.className = 'success';
         }
     };
     reader.onerror = function() {
-        console.error('Ошибка при чтении файла.');
-        statusElement.textContent = 'Ошибка при чтении файла.';
+        console.error('Error reading file.');
+        statusElement.textContent = 'Error reading file.';
         statusElement.className = 'error';
     };
-    reader.readAsDataURL(file);
-});
-
-// --- Восстановление данных при загрузке страницы ---
-document.addEventListener('DOMContentLoaded', function() {
-    const savedAvatarUrl = localStorage.getItem('userAvatarUrl');
-    const savedAvatarDataUrl = localStorage.getItem('userAvatarDataUrl');
-
-    if (savedAvatarUrl) {
-        document.getElementById('avatar-preview').src = savedAvatarUrl;
-    } else if (savedAvatarDataUrl) {
-        document.getElementById('avatar-preview').src = savedAvatarDataUrl;
-    }
-
-    const savedUsername = localStorage.getItem('userUsername');
-    if (savedUsername) {
-        document.getElementById('username-input').value = savedUsername;
-        document.getElementById('display-username').textContent = savedUsername;
-    }
+    reader.readAsDataURL(file); // Начинаем чтение файла как Data URL
 });
 
 // --- Обработчик ввода логина ---
 document.getElementById('username-input').addEventListener('input', function(event) {
     const username = event.target.value;
-    document.getElementById('display-username').textContent = username || 'Ваш Логин';
+    document.getElementById('display-username').textContent = username || 'Your Username';
     localStorage.setItem('userUsername', username);
 });
+
+// --- УДАЛЕНО: Восстановление данных при загрузке страницы ---
+// document.addEventListener('DOMContentLoaded', function() {
+//     const savedAvatarUrl = localStorage.getItem('userAvatarUrl');
+//     const savedAvatarDataUrl = localStorage.getItem('userAvatarDataUrl');
+//
+//     if (savedAvatarUrl) {
+//         document.getElementById('avatar-preview').src = savedAvatarUrl;
+//         console.log('Avatar restored from ImgBB URL.');
+//     } else if (savedAvatarDataUrl) {
+//         document.getElementById('avatar-preview').src = savedAvatarDataUrl;
+//         console.log('Avatar restored from Data URL.');
+//     }
+//
+//     const savedUsername = localStorage.getItem('userUsername');
+//     if (savedUsername) {
+//         document.getElementById('username-input').value = savedUsername;
+//         document.getElementById('display-username').textContent = savedUsername;
+//     }
+// });

@@ -258,7 +258,7 @@ body {
 /* --- Стили для сгенерированного паспорта --- */
 .generated-passport {
     background: linear-gradient(135deg, #1e1e1e, #121212);
-    border-radius: 16px;
+    border-radius: 0; /* Изменено: квадратные края */
     padding: 20px;
     text-align: center;
     box-shadow: 0 8px 32px rgba(0,0,0,0.5);
@@ -315,7 +315,7 @@ body {
 }
 
 .generated-passport .display-username {
-    font-size: 1.5em;
+    font-size: 1.3em; /* Изменено: уменьшен размер текста */
     font-weight: bold;
     margin: 10px 0;
     color: #ffffff;
@@ -333,7 +333,7 @@ body {
 .generated-passport .badge {
     display: inline-block;
     padding: 8px 16px;
-    border-radius: 20px;
+    border-radius: 0; /* Изменено: квадратные бейджи */
     font-weight: bold;
     font-size: 0.9em;
     text-transform: uppercase;
@@ -356,6 +356,7 @@ body {
     display: inline-flex; /* Используем flex для выравнивания иконки и текста */
     align-items: center; /* Выравнивание по центру по вертикали */
     gap: 4px; /* Небольшой отступ между иконкой и текстом */
+    border-radius: 0; /* Изменено: квадратные рамки вокруг флагов */
     /* Можно добавить стили для фона, рамки, скругления, если нужно */
     /* padding: 4px; */
     /* border: 1px solid #444; */
@@ -371,12 +372,12 @@ body {
 
 /* --- Стили для названия страны рядом с флагом --- */
 .generated-passport .country-name {
-    font-size: 0.8em; /* Немного уменьшим размер текста */
+    font-size: 0.7em; /* Изменено: уменьшен размер текста */
     color: #cccccc; /* Цвет текста */
 }
 
 .generated-passport .activity-description {
-    font-size: 0.9em;
+    font-size: 0.8em; /* Изменено: уменьшен размер текста */
     margin: 15px 0;
     line-height: 1.5;
     color: #cccccc;

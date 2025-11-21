@@ -98,6 +98,7 @@ function generatePassportHTML(avatarUrl, username, badges, countries) { // Пр�
     `;
     // --- /Возвращаем НОВУЮ HTML-структуру ---
 }
+}
 
 // --- Обработчик кнопки "Создать" ---
 document.getElementById('generate-btn').addEventListener('click', function() {

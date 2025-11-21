@@ -25,17 +25,17 @@ function getPassportData() {
     return { avatarUrl, username, selectedBadges, selectedCountries };
 }
 
-// --- Функция генерации HTML для паспорта (ОБНОВЛЁННАЯ) ---
+// --- Функция генерации HTML для паспорта ---
 function generatePassportHTML(avatarUrl, username, badges, countries) { // Принимаем и страны
     console.log("Генерация паспорта. Data URL аватара:", avatarUrl); // Добавим лог
     let badgesHTML = '';
-badges.forEach(badgeText => {
-    const className = badgeClassMap[badgeText] || "badge-primary"; // Если нет в мапе, используем primary
-    // Создаём SVG-иконку (простой квадратик) с цветом #f6c847
-    const svgIcon = `<svg width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><rect width="10" height="10" fill="#f6c847"/></svg>`;
-    // Добавляем SVG-иконку перед текстом бейджа
-    badgesHTML += `<div class="badge ${className}">${svgIcon} ${badgeText}</div>`;
-});
+    badges.forEach(badgeText => {
+        const className = badgeClassMap[badgeText] || "badge-primary"; // Если нет в мапе, используем primary
+        // Создаём SVG-иконку (квадратик) с цветом #f6c847
+        const svgIcon = `<svg width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><rect width="10" height="10" fill="#f6c847"/></svg>`;
+        // Добавляем SVG-иконку перед текстом бейджа
+        badgesHTML += `<div class="badge ${className}">${svgIcon} ${badgeText}</div>`;
+    });
 
     // --- Генерируем HTML для флагов стран ---
     let countriesHTML = '';
@@ -67,38 +67,34 @@ badges.forEach(badgeText => {
     });
     // --- /Генерируем HTML для флагов стран ---
 
-    // --- Возвращаем НОВУЮ HTML-структуру (ОБНОВЛЕНА!) ---
-    // Упрощаем структуру и убираем сложные стили для html2canvas
+    // --- Возвращаем НОВУЮ HTML-структуру ---
     return `
-        <!-- Упрощённый контейнер -->
-        <div style="background: linear-gradient(135deg, #1e1e1e, #121212); padding: 20px; text-align: center; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.5);">
-            <!-- Аватар без сложного фона -->
-            <img src="${avatarUrl}" alt="Avatar Preview" class="avatar-img" style="width: 180px; height: 180px; border-radius: 0; object-fit: cover; border: 3px solid white; box-shadow: 0 0 15px rgba(255,255,255,0.3); margin: 0 auto 20px; display: block;">
-            
-            <!-- Логотип проекта в правом верхнем углу -->
-            <img src="xlogo.png" alt="Project Logo" class="project-logo" style="position: absolute; top: 10px; right: 10px; width: 140px; height: 50px; z-index: 10;">
-            
-            <!-- Имя пользователя с галочкой -->
-            <div class="display-username" style="font-size: 1.3em; font-weight: bold; margin: 10px 0; color: #ffffff; letter-spacing: 0.5px; display: flex; justify-content: center; align-items: center; gap: 5px;">
-                ${username}
-                <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#4CAF50"><path d="M14 5.5L6 13.5L2 9.5l1.414-1.414L6 10.67l7.586-7.586L14 5.5z"/></svg>
+        <!-- Новый контейнер для аватара и текста -->
+        <div class="avatar-and-text-container">
+            <!-- Левая часть: Аватар -->
+            <div class="avatar-wrapper">
+                <div class="card-background">
+                    <img src="${avatarUrl}" alt="Avatar Preview" class="avatar-img">
+                </div>
             </div>
-
-            <!-- Бейджи -->
-            <div class="badges-row" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 15px;">
-                ${badgesHTML}
-            </div>
-
-            <!-- Страны -->
-            <div class="countries-row" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 15px;">
-                ${countriesHTML}
-            </div>
-
-            <!-- Описание активности -->
-            <div class="activity-description" style="font-size: 0.8em; margin: 15px 0; line-height: 1.5; color: #cccccc; font-style: italic;">
-                Achievement card on the Kash Bot server 🌀
+            <!-- Правая часть: Текст и логотип -->
+            <div class="text-content">
+                <!-- Логотип проекта в правом верхнем углу текста -->
+                <img src="xlogo.png" alt="Project Logo" class="project-logo">
+                <div class="display-username">${username} <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#4CAF50"><path d="M14 5.5L6 13.5L2 9.5l1.414-1.414L6 10.67l7.586-7.586L14 5.5z"/></svg></div>
+                <div class="badges-row">
+                    ${badgesHTML}
+                </div>
+                <div class="countries-row">
+                    ${countriesHTML}
+                </div>
+                <!-- Перемещаем .activity-description в самый низ .text-content -->
+                <div class="activity-description">
+                    Achievement card on the Kash Bot server 🌀
+                </div>
             </div>
         </div>
+        <!-- /avatar-and-text-container -->
     `;
     // --- /Возвращаем НОВУЮ HTML-структуру ---
 }
@@ -125,53 +121,26 @@ document.getElementById('back-btn').addEventListener('click', function() {
     document.getElementById('editor-section').style.display = 'block';
 });
 
-// --- Обработчик кнопки "Скачать как PNG" (ОБНОВЛЁННЫЙ) ---
-document.getElementById('download-btn').addEventListener('click', async function() { // Добавлен async
+// --- Обработчик кнопки "Скачать как PNG" ---
+document.getElementById('download-btn').addEventListener('click', function() {
     const generatedPassportElement = document.getElementById('generated-passport');
+    // Получаем Data URL из сгенерированного элемента (для уверенности)
     const generatedAvatarImg = generatedPassportElement.querySelector('.avatar-img');
-
-    if (!generatedAvatarImg) {
-        console.error("html2canvas: Не найден элемент аватара (.avatar-img) в #generated-passport.");
-        return;
-    }
-
-    // Проверяем, что src - это Data URL или локальный путь
-    const generatedAvatarSrc = generatedAvatarImg.src;
-    console.log("Скачивание. Data URL аватара в сгенерированном элементе:", generatedAvatarSrc);
-
-    if (generatedAvatarSrc.startsWith('image')) { // Проверяем Data URL
-        console.log("html2canvas: src аватара является Data URL, ожидаем его загрузку.");
-        // Создаём промис, который разрешится, когда изображение загрузится
-        const imageLoadPromise = new Promise((resolve, reject) => {
-            generatedAvatarImg.onload = resolve;
-            generatedAvatarImg.onerror = () => reject(new Error('Failed to load avatar image for canvas'));
-            // Если изображение уже загружено, onload не сработает. Проверим.
-            if (generatedAvatarImg.complete && generatedAvatarImg.naturalHeight !== 0) {
-                 // Уже загружено, разрешаем промис
-                 resolve();
-            }
-        });
-
-        try {
-            // Ждём загрузки изображения
-            await imageLoadPromise;
-            console.log("html2canvas: Изображение аватара загружено, запускаем html2canvas.");
-        } catch (error) {
-            console.error("html2canvas: Ошибка загрузки аватара:", error);
-            return; // Не продолжаем, если аватар не загрузился
-        }
+    const generatedAvatarSrc = generatedAvatarImg ? generatedAvatarImg.src : null;
+    console.log("Скачивание. Data URL аватара в сгенерированном элементе:", generatedAvatarSrc); // Добавим лог
+    // Проверяем, что src - это Data URL
+    if (generatedAvatarSrc && generatedAvatarSrc.startsWith('image')) { // Проверяем image
+        console.log("html2canvas: src аватара является Data URL, всё ок.");
     } else {
-        console.warn("html2canvas: src аватара не является Data URL. Это может повлиять на отображение в PNG в зависимости от политики CORS.", generatedAvatarSrc);
-        // В этом случае мы полагаемся на html2canvas, но ошибка CORS может всё равно возникнуть.
+        console.error("html2canvas: src аватара НЕ является Data URL! Это может быть проблемой.", generatedAvatarSrc);
     }
-
-    // Теперь вызываем html2canvas, зная, что изображение загружено (если это Data URL)
     html2canvas(generatedPassportElement, {
-        backgroundColor: '#121212', // Установить фон для холста (ваш фоновый цвет)
+        backgroundColor: '#121212', // Установить фон для холста
         scale: 2, // Повысить качество (по умолчанию 1)
-        allowTaint: true, // Позволить "загрязнение" (может помочь с изображениями)
-        useCORS: true,   // Использовать CORS (не поможет с Data URL, но на всякий случай)
-        logging: true, // Включить логгирование html2canvas (для отладки)
+        // Попробуем отключить z-index в превью, если он мешает
+        // logging: true, // Включить логгирование html2canvas (для отладки)
+        // allowTaint: true, // Позволить "загрязнение" (может помочь с изображениями)
+        // useCORS: true,   // Использовать CORS (не поможет с Data URL, но на всякий случай)
     }).then(canvas => {
         const link = document.createElement('a');
         link.download = 'my-discord-passport.png';
@@ -272,3 +241,33 @@ document.getElementById('username-input').addEventListener('input', function(eve
     document.getElementById('display-username').textContent = username || 'Your Username';
     localStorage.setItem('userUsername', username);
 });
+
+// --- УДАЛЕНО: Восстановление данных при загрузке страницы ---
+// document.addEventListener('DOMContentLoaded', function() {
+//     const savedAvatarUrl = localStorage.getItem('userAvatarUrl');
+//     const savedAvatarDataUrl = localStorage.getItem('userAvatarDataUrl');
+//
+//     if (savedAvatarUrl) {
+//         document.getElementById('avatar-preview').src = savedAvatarUrl;
+//         console.log('Avatar restored from ImgBB URL.');
+//     } else if (savedAvatarDataUrl) {
+//         document.getElementById('avatar-preview').src = savedAvatarDataUrl;
+//         console.log('Avatar restored from Data URL.');
+//     }
+//
+//     const savedUsername = localStorage.getItem('userUsername');
+//     if (savedUsername) {
+//         document.getElementById('username-input').value = savedUsername;
+//         document.getElementById('display-username').textContent = savedUsername;
+//     }
+// });
+
+// --- УДАЛЕНО: Обработчик выбора языка ---
+// document.querySelectorAll('.lang-option').forEach(option => {
+//     option.addEventListener('click', function() {
+//         const lang = this.getAttribute('data-lang');
+//         console.log(`Language selected: ${lang}`);
+//         // Здесь можно добавить логику переключения языка интерфейса
+//         // Пока просто выводим в консоль
+//     });
+// });

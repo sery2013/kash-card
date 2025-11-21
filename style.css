@@ -268,7 +268,6 @@ body {
     width: 580px; /* Ширина как у поста в Twitter */
     min-height: 380px; /* Минимальная высота */
     margin: 0 auto; /* Центрируем внутри .container */
-    color: white; /* ИЗМЕНЕНО: Цвет текста на белый */
 }
 
 /* Обновляем стили для фона аватара в сгенерированном паспорте */
@@ -319,7 +318,7 @@ body {
     font-size: 1.3em; /* Изменено: уменьшен размер текста */
     font-weight: bold;
     margin: 10px 0;
-    color: white; /* ИЗМЕНЕНО: Цвет текста на белый */
+    color: #ffffff;
     letter-spacing: 0.5px;
 }
 
@@ -341,7 +340,6 @@ body {
     letter-spacing: 1px;
     margin: 5px;
     cursor: default;
-    color: white; /* ИЗМЕНЕНО: Цвет текста бейджа на белый */
 }
 
 /* --- Стили для ряда флагов стран в сгенерированном паспорте --- */
@@ -375,16 +373,22 @@ body {
 /* --- Стили для названия страны рядом с флагом --- */
 .generated-passport .country-name {
     font-size: 0.7em; /* Изменено: уменьшен размер текста */
-    color: white; /* ИЗМЕНЕНО: Цвет текста на белый */
+    color: #cccccc; /* Цвет текста */
 }
 
 .generated-passport .activity-description {
-    font-size: 0.8em; /* Изменено: уменьшен размер текста */
-    margin: 15px 0;
-    line-height: 1.5;
-    color: white; /* ИЗМЕНЕНО: Цвет текста на белый */
-    font-style: italic;
+    font-size: 0.8em; /* Текущий размер */
+    margin: 15px 0;   /* Текущий отступ (сверху и снизу) */
+    line-height: 1.5; /* Текущий межстрочный интервал */
+    color: #cccccc;   /* Текущий цвет */
+    font-style: italic; /* Текущий стиль */
+    /* --- Добавьте или измените это свойство --- */
+    margin-top: 30px; /* Увеличьте значение, например до 30px */
+    /* Если вы хотите только отступ снизу, используйте margin-bottom */
+    /* margin-bottom: 20px; */
+    /* margin-top: 15px; */ /* Если нужно уменьшить отступ сверху */
 }
+
 /* --- Стили для кнопок действий --- */
 .generated-actions {
     display: flex;
@@ -473,11 +477,6 @@ body {
     z-index: 10; /* Убедимся, что логотип поверх других элементов */
 }
 
-/* --- Явно указываем, что все элементы внутри сгенерированной карточки должны иметь прозрачный фон --- */
-/* Это гарантирует, что будет виден фон самой карточки (.generated-passport) */
-.generated-passport * {
-    background: transparent !important;
-}
 
 .header-logo-box {
     text-align: center; /* Выравнивание по левому краю */

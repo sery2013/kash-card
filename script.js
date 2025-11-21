@@ -88,8 +88,7 @@ function generatePassportHTML(avatarUrl, username, badges, countries) { // Пр�
 
         <!-- Правая часть: Текст и логотип -->
         <div class="text-content">
-            <!-- Логотип проекта в правом верхнем углу текста -->
-            <img src="xlogo.png" alt="Project Logo" class="project-logo">
+         
             <div class="display-username">${username} <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#4CAF50"><path d="M14 5.5L6 13.5L2 9.5l1.414-1.414L6 10.67l7.586-7.586L14 5.5z"/></svg></div>
             <div class="badges-row">
                 ${badgesHTML}

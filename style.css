@@ -99,14 +99,15 @@ body {
 }
 
 .upload-btn {
-    background: linear-gradient(to right, #7928CA, #FF0080);
-    color: white;
+    background: linear-gradient(to right, #FF8C00, #FFA500); /* Оранжевый градиент */
+    color: #000; /* Цвет текста */
     border: none;
-    padding: 8px 16px;
-    border-radius: 20px;
+    padding: 8px 16px; /* Уменьшенный padding */
+    border-radius: 0; /* Квадратные края */
     cursor: pointer;
     font-weight: bold;
     margin: 10px 0;
+    font-size: 0.9em; /* Уменьшенный размер шрифта */
     transition: all 0.3s ease;
 }
 

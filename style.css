@@ -18,7 +18,7 @@ body {
     /* Опционально: если вы хотите добавить затемнение (полупрозрачный слой поверх изображения) */
     /* Это можно сделать с помощью псевдоэлемента, но проще использовать rgba-цвет с прозрачностью */
     /* Например, добавьте полупрозрачный чёрный слой поверх изображения: */
-    /* background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('assets/background.png'); */
+    /* background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('https://i.imgur.com/rFTQqL5.png'); */
 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: white;

@@ -6,7 +6,19 @@
 
 /* Центрируем и ограничиваем ширину всего содержимого, как пост в Twitter */
 body {
-    background-color: #0d0d0d;
+    /* Комбинируем радиальный градиент (от центра) с повторяющимся узором линий */
+    background: 
+        /* Повторяющийся узор диагональных линий */
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 5px,
+            rgba(255, 255, 255, 0.05) 5px,
+            rgba(255, 255, 255, 0.05) 10px
+        ),
+        /* Радиальный градиент от центра экрана */
+        radial-gradient(circle at center, #0d0d0d 0%, #1a1a2e 50%, #16213e 100%);
+    
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: white;
     display: flex;
@@ -15,6 +27,10 @@ body {
     min-height: 100vh;
     padding: 20px;
     width: 100%;
+    /* Важно: указать, как работать с несколькими фонами */
+    background-repeat: repeat, no-repeat; /* Узор повторяется, градиент - нет */
+    background-size: auto, cover; /* Узор - размер по умолчанию, градиент - покрывает всё */
+    background-position: 0 0, center; /* Позиция узора и градиента */
 }
 
 /* Обновляем .container, чтобы он соответствовал ширине поста в Twitter */

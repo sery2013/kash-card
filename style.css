@@ -6,7 +6,7 @@
 
 /* Центрируем и ограничиваем ширину всего содержимого, как пост в Twitter */
 body {
-    background-color: #FFA500; /* ИЗМЕНЕНО: Оранжевый фон для ВСЕГО body */
+    background-color: #0d0d0d;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: white;
     display: flex;
@@ -41,7 +41,7 @@ body {
 
 /* Основной редактор паспорта */
 .passport-card {
-    background: #FFA500; /* ИЗМЕНЕНО: Оранжевый фон */
+    background: linear-gradient(135deg, #1e1e1e, #121212);
     border-radius: 16px;
     padding: 20px;
     text-align: center;
@@ -50,7 +50,6 @@ body {
     overflow: hidden;
     width: 100%; /* Занимает всю ширину .container */
     min-height: 380px; /* Минимальная высота */
-    color: black; /* ИЗМЕНЕНО: Цвет текста на чёрный */
 }
 
 /* Обновляем стили для фона аватара */
@@ -64,8 +63,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* --- ГРАДИЕНТНЫЙ ФОН (теперь светло-оранжевый) --- */
-    background: linear-gradient(135deg, #FFD580, #FFB74D); /* Светло-оранжевый градиент */
+    /* --- ГРАДИЕНТНЫЙ ФОН --- */
+    background: linear-gradient(135deg, #555, #333);
     /* Псевдоэлемент для создания узора сетки */
     z-index: 1;
 }
@@ -77,10 +76,10 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    /* Повторяющийся узор сетки (теперь тёмный, чтобы был виден на светлом фоне) */
+    /* Повторяющийся узор сетки */
     background-image: 
-        linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+        linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
     background-size: 20px 20px;
     z-index: 2;
 }
@@ -122,8 +121,8 @@ body {
     opacity: 0.8;
 }
 
-.status.success { color: #2E7D32; } /* ИЗМЕНЕНО: Темно-зелёный для успеха */
-.status.error { color: #C62828; } /* ИЗМЕНЕНО: Темно-красный для ошибки */
+.status.success { color: #4CAF50; }
+.status.error { color: #FF5252; }
 
 .username-input-wrapper {
     margin: 15px 0;
@@ -133,30 +132,29 @@ body {
     display: block;
     margin-bottom: 5px;
     font-size: 0.9em;
-    color: black; /* ИЗМЕНЕНО: Цвет текста */
 }
 
 .username-input-wrapper input {
     width: 100%;
     padding: 10px;
-    background: #FFD580; /* ИЗМЕНЕНО: Светлый фон для инпута */
-    border: 1px solid #FF8C00; /* ИЗМЕНЕНО: Контрастная граница */
+    background: #2a2a2a;
+    border: 1px solid #444;
     border-radius: 8px;
-    color: black; /* ИЗМЕНЕНО: Цвет текста в инпуте */
+    color: white;
     font-size: 1em;
 }
 
 .username-input-wrapper input:focus {
     outline: none;
-    border-color: #000000; /* ИЗМЕНЕНО: Чёрная рамка при фокусе */
-    box-shadow: 0 0 5px rgba(0,0,0,0.3); /* Тень при фокусе */
+    border-color: #FF0080;
+    box-shadow: 0 0 5px rgba(255,0,128,0.3);
 }
 
 .display-username {
     font-size: 1.5em;
     font-weight: bold;
     margin: 15px 0;
-    color: black; /* ИЗМЕНЕНО: Цвет текста */
+    color: #ffffff;
     letter-spacing: 0.5px;
 }
 
@@ -172,7 +170,7 @@ body {
 .badges-selection {
     flex: 1; /* Занимает доступное пространство */
     text-align: left; /* Выравнивание по левому краю */
-    background-color: #FFD580; /* ИЗМЕНЕНО: Светло-оранжевый фон для колонки */
+    background-color: #1a1a1a; /* Фон для колонки */
     padding: 15px;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
@@ -181,7 +179,6 @@ body {
 .badges-selection h3 {
     margin-bottom: 10px;
     text-align: left;
-    color: black; /* ИЗМЕНЕНО: Цвет текста */
 }
 
 .checkbox-label {
@@ -190,7 +187,6 @@ body {
     font-size: 0.9em;
     cursor: pointer;
     text-align: left;
-    color: black; /* ИЗМЕНЕНО: Цвет текста */
 }
 
 .checkbox-label input {
@@ -201,7 +197,7 @@ body {
 /* --- Стили для колонки выбора стран --- */
 #country-selector {
     width: 200px; /* Фиксированная ширина для колонки */
-    background-color: #FFD580; /* ИЗМЕНЕНО: Светло-оранжевый фон */
+    background-color: #1a1a1a; /* Светлее основного фона */
     border-radius: 12px;
     padding: 15px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
@@ -215,7 +211,7 @@ body {
     margin: 0 0 10px 0;
     font-size: 1.1em;
     text-align: center; /* Центрируем заголовок */
-    color: black; /* ИЗМЕНЕНО: Цвет текста */
+    color: #ffffff; /* Цвет текста */
 }
 .country-option {
     display: block;
@@ -223,7 +219,6 @@ body {
     font-size: 0.9em;
     cursor: pointer;
     text-align: left; /* Выравнивание по левому краю */
-    color: black; /* ИЗМЕНЕНО: Цвет текста */
 }
 .country-option input {
     margin-right: 8px;
@@ -256,13 +251,13 @@ body {
     font-size: 0.9em;
     margin: 15px 0;
     line-height: 1.5;
-    color: black; /* ИЗМЕНЕНО: Цвет текста */
+    color: #cccccc;
     font-style: italic;
 }
 
 /* --- Стили для сгенерированного паспорта --- */
 .generated-passport {
-    background: #FFA500; /* ИЗМЕНЕНО: Оранжевый фон */
+    background: linear-gradient(135deg, #1e1e1e, #121212); /* ИЗМЕНЕНО: Градиентный фон, как в конструкторе */
     border-radius: 0; /* Изменено: квадратные края */
     padding: 20px;
     text-align: center;
@@ -273,7 +268,6 @@ body {
     width: 580px; /* Ширина как у поста в Twitter */
     min-height: 380px; /* Минимальная высота */
     margin: 0 auto; /* Центрируем внутри .container */
-    color: black; /* ИЗМЕНЕНО: Цвет текста на чёрный */
 }
 
 /* Обновляем стили для фона аватара в сгенерированном паспорте */
@@ -290,7 +284,7 @@ body {
     position: relative;
     overflow: hidden;
     z-index: 1;
-    background: linear-gradient(135deg, #FFD580, #FFB74D); /* ИЗМЕНЕНО: Светло-оранжевый градиент */
+    background: linear-gradient(135deg, #555, #333);
 }
 
 .generated-passport .card-background::before {
@@ -300,10 +294,10 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    /* Повторяющийся узор сетки (теперь тёмный, чтобы был виден на светлом фоне) */
+    /* Повторяющийся узор сетки */
     background-image: 
-        linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+        linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
     background-size: 20px 20px;
     z-index: 2;
 }
@@ -324,7 +318,7 @@ body {
     font-size: 1.3em; /* Изменено: уменьшен размер текста */
     font-weight: bold;
     margin: 10px 0;
-    color: black; /* ИЗМЕНЕНО: Цвет текста */
+    color: #ffffff;
     letter-spacing: 0.5px;
 }
 
@@ -346,7 +340,6 @@ body {
     letter-spacing: 1px;
     margin: 5px;
     cursor: default;
-    color: black; /* ИЗМЕНЕНО: Цвет текста бейджа */
 }
 
 /* --- Стили для ряда флагов стран в сгенерированном паспорте --- */
@@ -380,20 +373,15 @@ body {
 /* --- Стили для названия страны рядом с флагом --- */
 .generated-passport .country-name {
     font-size: 0.7em; /* Изменено: уменьшен размер текста */
-    color: black; /* ИЗМЕНЕНО: Цвет текста */
+    color: #cccccc; /* Цвет текста */
 }
 
 .generated-passport .activity-description {
-    font-size: 0.8em; /* Текущий размер */
-    margin: 15px 0;   /* Текущий отступ (сверху и снизу) */
-    line-height: 1.5; /* Текущий межстрочный интервал */
-    color: black;   /* ИЗМЕНЕНО: Цвет текста */
-    font-style: italic; /* Текущий стиль */
-    /* --- Добавьте или измените это свойство --- */
-    margin-top: 30px; /* Увеличьте значение, например до 30px */
-    /* Если вы хотите только отступ снизу, используйте margin-bottom */
-    /* margin-bottom: 20px; */
-    /* margin-top: 15px; */ /* Если нужно уменьшить отступ сверху */
+    font-size: 0.8em; /* Изменено: уменьшен размер текста */
+    margin: 15px 0;
+    line-height: 1.5;
+    color: #cccccc;
+    font-style: italic;
 }
 
 /* --- Стили для кнопок действий --- */
@@ -471,7 +459,6 @@ body {
     text-align: center; /* Центрируем текст */
     margin-bottom: 20px; /* Добавляем отступ снизу (перед .generated-passport) */
     margin-top: 10px;    /* (Опционально) Добавляем отступ сверху */
-    color: white; /* ИЗМЕНЕНО: Цвет заголовка (если нужен контраст с фоном body) */
 }
 
 
@@ -485,82 +472,11 @@ body {
     z-index: 10; /* Убедимся, что логотип поверх других элементов */
 }
 
-/* --- Стили для секции генерации --- */
-/* Чтобы весь фон секции генерации был оранжевым, а не чёрным */
-#generated-section {
-    background-color: #FFA500; /* ИЗМЕНЕНО: Оранжевый фон для всей секции */
+/* --- Явно указываем, что все элементы внутри сгенерированной карточки должны иметь прозрачный фон --- */
+/* Это гарантирует, что будет виден фон самой карточки (.generated-passport) */
+.generated-passport * {
+    background: transparent !important;
 }
-
-/* Чтобы контейнер внутри секции генерации имел белую рамку (как на скриншоте) */
-#generated-section .container {
-    background-color: #FFA500; /* ИЗМЕНЕНО: Оранжевый фон для контейнера */
-    border: 10px solid white; /* Добавлен белый бордер */
-    border-radius: 16px; /* Скруглённые углы */
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5); /* Тень */
-}
-
-/* Чтобы заголовок "Your generated passport:" был чёрным на оранжевом фоне */
-#generated-section .container h2 {
-    color: black; /* ИЗМЕНЕНО: Цвет заголовка */
-}
-
-/* Чтобы кнопки внизу были чёрными на оранжевом фоне */
-.generated-actions .action-btn {
-    background: #FFA500; /* ИЗМЕНЕНО: Оранжевый фон для кнопок */
-    color: black; /* ИЗМЕНЕНО: Цвет текста */
-    border: 2px solid black; /* Добавлена чёрная рамка */
-    box-shadow: none; /* Убираем тень */
-}
-
-.generated-actions .action-btn:hover {
-    background: #FFD580; /* Светлее при наведении */
-    box-shadow: 0 0 10px rgba(0,0,0,0.3); /* Добавляем тень при наведении */
-}
-
-/* Чтобы текст в кнопках был чёрным */
-.generated-actions .action-btn.download-btn,
-.generated-actions .action-btn.twitter-btn,
-.generated-actions .action-btn.back-btn {
-    color: black; /* ИЗМЕНЕНО: Цвет текста */
-}
-
-/* Чтобы ссылки в кнопках были чёрными */
-.generated-actions .action-btn a {
-    color: black; /* ИЗМЕНЕНО: Цвет текста */
-}
-
-/* --- ДОБАВЛЕНО: Явное указание цвета фона для всех возможных элементов --- */
-/* Если какие-то элементы всё ещё имеют чёрный фон, мы явно зададим им оранжевый */
-#editor-section {
-    background-color: #FFA500;
-}
-
-#generated-section {
-    background-color: #FFA500;
-}
-
-#generated-section .container {
-    background-color: #FFA500;
-}
-
-#generated-section .container .generated-passport {
-    background-color: #FFA500;
-}
-
-#generated-section .container .generated-actions {
-    background-color: #FFA500;
-}
-
-#generated-section .container .generated-actions .action-btn {
-    background-color: #FFA500;
-}
-
-/* Явно задаём цвет текста для всех элементов, чтобы избежать чёрного текста на чёрном фоне */
-#generated-section .container * {
-    color: black !important;
-}
-
-
 
 .header-logo-box {
     text-align: center; /* Выравнивание по левому краю */

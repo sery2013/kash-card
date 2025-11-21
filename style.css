@@ -99,7 +99,7 @@ body {
 }
 
 .upload-btn {
-    background: linear-gradient(to right, #FF8C00, #FFA500); /* Оранжевый градиент */
+    background: linear-gradient(to right, #ffd580, #FFA500); /* Оранжевый градиент */
     color: #000; /* Цвет текста */
     border: none;
     padding: 8px 16px; /* Уменьшенный padding */
@@ -239,7 +239,7 @@ body {
 }
 
 .generate-btn {
-    background: linear-gradient(to right, #FF8C00, #FFA500); /* Изменённый градиент (оранжевый) */
+    background: linear-gradient(to right, #ffd580, #FFA500); /* Изменённый градиент (оранжевый) */
     color: #000; /* Цвет текста */
     border: none;
     padding: 8px 16px; /* Уменьшенный padding */

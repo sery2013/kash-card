@@ -25,17 +25,17 @@ function getPassportData() {
     return { avatarUrl, username, selectedBadges, selectedCountries };
 }
 
-// --- Функция генерации HTML для паспорта (ОБНОВЛЁННАЯ) ---
+// --- Функция генерации HTML для паспорта ---
 function generatePassportHTML(avatarUrl, username, badges, countries) { // Принимаем и страны
     console.log("Генерация паспорта. Data URL аватара:", avatarUrl); // Добавим лог
     let badgesHTML = '';
-badges.forEach(badgeText => {
-    const className = badgeClassMap[badgeText] || "badge-primary"; // Если нет в мапе, используем primary
-    // Создаём SVG-иконку (простой квадратик) с цветом #f6c847
-    const svgIcon = `<svg width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><rect width="10" height="10" fill="#f6c847"/></svg>`;
-    // Добавляем SVG-иконку перед текстом бейджа
-    badgesHTML += `<div class="badge ${className}">${svgIcon} ${badgeText}</div>`;
-});
+    badges.forEach(badgeText => {
+        const className = badgeClassMap[badgeText] || "badge-primary"; // Если нет в мапе, используем primary
+        // Создаём SVG-иконку (квадратик) с цветом #f6c847
+        const svgIcon = `<svg width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><rect width="10" height="10" fill="#f6c847"/></svg>`;
+        // Добавляем SVG-иконку перед текстом бейджа
+        badgesHTML += `<div class="badge ${className}">${svgIcon} ${badgeText}</div>`;
+    });
 
     // --- Генерируем HTML для флагов стран ---
     let countriesHTML = '';
@@ -67,35 +67,38 @@ badges.forEach(badgeText => {
     });
     // --- /Генерируем HTML для флагов стран ---
 
-    // --- Возвращаем НОВУЮ HTML-структуру (ОБНОВЛЕНА!) ---
-    // Упрощаем структуру и убираем сложные стили для html2canvas
+    // --- Возвращаем НОВУЮ HTML-структуру ---
     return `
-        <!-- Упрощённый контейнер -->
-        <div style="background: linear-gradient(135deg, #1e1e1e, #121212); padding: 20px; text-align: center; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.5);">
-            <!-- Аватар без сложного фона -->
-            <img src="${avatarUrl}" alt="Avatar Preview" class="avatar-img" style="width: 180px; height: 180px; border-radius: 0; object-fit: cover; border: 3px solid white; box-shadow: 0 0 15px rgba(255,255,255,0.3); margin: 0 auto 20px; display: block;">
-            
-            <!-- Логотип проекта в правом верхнем углу -->
-            <img src="xlogo.png" alt="Project Logo" class="project-logo" style="position: absolute; top: 10px; right: 10px; width: 140px; height: 50px; z-index: 10;">
-            
-            <!-- Имя пользователя с галочкой -->
-            <div class="display-username" style="font-size: 1.3em; font-weight: bold; margin: 10px 0; color: #ffffff; letter-spacing: 0.5px; display: flex; justify-content: center; align-items: center; gap: 5px;">
-                ${username}
-                <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#4CAF50"><path d="M14 5.5L6 13.5L2 9.5l1.414-1.414L6 10.67l7.586-7.586L14 5.5z"/></svg>
+        <!-- Новый контейнер для двух аватаров -->
+        <div class="avatars-container">
+            <!-- Первый аватар (область 1) -->
+            <div class="avatar-wrapper">
+                <div class="card-background">
+                    <img src="${avatarUrl}" alt="Avatar Preview" class="avatar-img">
+                </div>
             </div>
+            <!-- Второй аватар (область 2) -->
+            <div class="avatar-wrapper">
+                <div class="card-background">
+                    <img src="second-avatar.png" alt="Second Avatar" class="avatar-img">
+                </div>
+            </div>
+        </div>
+        <!-- /avatars-container -->
 
-            <!-- Бейджи -->
-            <div class="badges-row" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 15px;">
+        <!-- Правая часть: Текст и логотип -->
+        <div class="text-content">
+            <!-- Логотип проекта в правом верхнем углу текста -->
+            <img src="xlogo.png" alt="Project Logo" class="project-logo">
+            <div class="display-username">${username} <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#4CAF50"><path d="M14 5.5L6 13.5L2 9.5l1.414-1.414L6 10.67l7.586-7.586L14 5.5z"/></svg></div>
+            <div class="badges-row">
                 ${badgesHTML}
             </div>
-
-            <!-- Страны -->
-            <div class="countries-row" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 15px;">
+            <div class="countries-row">
                 ${countriesHTML}
             </div>
-
-            <!-- Описание активности -->
-            <div class="activity-description" style="font-size: 0.8em; margin: 15px 0; line-height: 1.5; color: #cccccc; font-style: italic;">
+            <!-- Перемещаем .activity-description в самый низ .text-content -->
+            <div class="activity-description">
                 Achievement card on the Kash Bot server 🌀
             </div>
         </div>

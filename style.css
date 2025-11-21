@@ -528,3 +528,34 @@ body {
 .generated-actions .action-btn a {
     color: black; /* ИЗМЕНЕНО: Цвет текста */
 }
+
+/* --- ДОБАВЛЕНО: Явное указание цвета фона для всех возможных элементов --- */
+/* Если какие-то элементы всё ещё имеют чёрный фон, мы явно зададим им оранжевый */
+#editor-section {
+    background-color: #FFA500;
+}
+
+#generated-section {
+    background-color: #FFA500;
+}
+
+#generated-section .container {
+    background-color: #FFA500;
+}
+
+#generated-section .container .generated-passport {
+    background-color: #FFA500;
+}
+
+#generated-section .container .generated-actions {
+    background-color: #FFA500;
+}
+
+#generated-section .container .generated-actions .action-btn {
+    background-color: #FFA500;
+}
+
+/* Явно задаём цвет текста для всех элементов, чтобы избежать чёрного текста на чёрном фоне */
+#generated-section .container * {
+    color: black !important;
+}

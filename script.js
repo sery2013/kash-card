@@ -29,10 +29,13 @@ function getPassportData() {
 function generatePassportHTML(avatarUrl, username, badges, countries) { // Принимаем и страны
     console.log("Генерация паспорта. Data URL аватара:", avatarUrl); // Добавим лог
     let badgesHTML = '';
-    badges.forEach(badgeText => {
-        const className = badgeClassMap[badgeText] || "badge-primary"; // Если нет в мапе, используем primary
-        badgesHTML += `<div class="badge ${className}">${badgeText}</div>`;
-    });
+badges.forEach(badgeText => {
+    const className = badgeClassMap[badgeText] || "badge-primary"; // Если нет в мапе, используем primary
+    // Создаём SVG-иконку (простой квадратик) с цветом #f6c847
+    const svgIcon = `<svg width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><rect width="10" height="10" fill="#f6c847"/></svg>`;
+    // Добавляем SVG-иконку перед текстом бейджа
+    badgesHTML += `<div class="badge ${className}">${svgIcon} ${badgeText}</div>`;
+});
 
     // --- Генерируем HTML для флагов стран ---
     let countriesHTML = '';

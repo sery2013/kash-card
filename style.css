@@ -41,7 +41,7 @@ body {
 
 /* Основной редактор паспорта */
 .passport-card {
-    background: linear-gradient(135deg, #1e1e1e, #121212);
+    background: #FFA500; /* ИЗМЕНЕНО: Оранжевый фон */
     border-radius: 16px;
     padding: 20px;
     text-align: center;
@@ -50,6 +50,7 @@ body {
     overflow: hidden;
     width: 100%; /* Занимает всю ширину .container */
     min-height: 380px; /* Минимальная высота */
+    color: black; /* ИЗМЕНЕНО: Цвет текста на чёрный */
 }
 
 /* Обновляем стили для фона аватара */
@@ -63,8 +64,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* --- ГРАДИЕНТНЫЙ ФОН --- */
-    background: linear-gradient(135deg, #555, #333);
+    /* --- ГРАДИЕНТНЫЙ ФОН (теперь светло-оранжевый) --- */
+    background: linear-gradient(135deg, #FFD580, #FFB74D); /* Светло-оранжевый градиент */
     /* Псевдоэлемент для создания узора сетки */
     z-index: 1;
 }
@@ -76,10 +77,10 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    /* Повторяющийся узор сетки */
+    /* Повторяющийся узор сетки (теперь тёмный, чтобы был виден на светлом фоне) */
     background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+        linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
     background-size: 20px 20px;
     z-index: 2;
 }
@@ -121,8 +122,8 @@ body {
     opacity: 0.8;
 }
 
-.status.success { color: #4CAF50; }
-.status.error { color: #FF5252; }
+.status.success { color: #2E7D32; } /* ИЗМЕНЕНО: Темно-зелёный для успеха */
+.status.error { color: #C62828; } /* ИЗМЕНЕНО: Темно-красный для ошибки */
 
 .username-input-wrapper {
     margin: 15px 0;
@@ -132,29 +133,30 @@ body {
     display: block;
     margin-bottom: 5px;
     font-size: 0.9em;
+    color: black; /* ИЗМЕНЕНО: Цвет текста */
 }
 
 .username-input-wrapper input {
     width: 100%;
     padding: 10px;
-    background: #2a2a2a;
-    border: 1px solid #444;
+    background: #FFD580; /* ИЗМЕНЕНО: Светлый фон для инпута */
+    border: 1px solid #FF8C00; /* ИЗМЕНЕНО: Контрастная граница */
     border-radius: 8px;
-    color: white;
+    color: black; /* ИЗМЕНЕНО: Цвет текста в инпуте */
     font-size: 1em;
 }
 
 .username-input-wrapper input:focus {
     outline: none;
-    border-color: #FF0080;
-    box-shadow: 0 0 5px rgba(255,0,128,0.3);
+    border-color: #000000; /* ИЗМЕНЕНО: Чёрная рамка при фокусе */
+    box-shadow: 0 0 5px rgba(0,0,0,0.3); /* Тень при фокусе */
 }
 
 .display-username {
     font-size: 1.5em;
     font-weight: bold;
     margin: 15px 0;
-    color: #ffffff;
+    color: black; /* ИЗМЕНЕНО: Цвет текста */
     letter-spacing: 0.5px;
 }
 
@@ -170,7 +172,7 @@ body {
 .badges-selection {
     flex: 1; /* Занимает доступное пространство */
     text-align: left; /* Выравнивание по левому краю */
-    background-color: #1a1a1a; /* Фон для колонки */
+    background-color: #FFD580; /* ИЗМЕНЕНО: Светло-оранжевый фон для колонки */
     padding: 15px;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
@@ -179,6 +181,7 @@ body {
 .badges-selection h3 {
     margin-bottom: 10px;
     text-align: left;
+    color: black; /* ИЗМЕНЕНО: Цвет текста */
 }
 
 .checkbox-label {
@@ -187,6 +190,7 @@ body {
     font-size: 0.9em;
     cursor: pointer;
     text-align: left;
+    color: black; /* ИЗМЕНЕНО: Цвет текста */
 }
 
 .checkbox-label input {
@@ -197,7 +201,7 @@ body {
 /* --- Стили для колонки выбора стран --- */
 #country-selector {
     width: 200px; /* Фиксированная ширина для колонки */
-    background-color: #1a1a1a; /* Светлее основного фона */
+    background-color: #FFD580; /* ИЗМЕНЕНО: Светло-оранжевый фон */
     border-radius: 12px;
     padding: 15px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
@@ -211,7 +215,7 @@ body {
     margin: 0 0 10px 0;
     font-size: 1.1em;
     text-align: center; /* Центрируем заголовок */
-    color: #ffffff; /* Цвет текста */
+    color: black; /* ИЗМЕНЕНО: Цвет текста */
 }
 .country-option {
     display: block;
@@ -219,6 +223,7 @@ body {
     font-size: 0.9em;
     cursor: pointer;
     text-align: left; /* Выравнивание по левому краю */
+    color: black; /* ИЗМЕНЕНО: Цвет текста */
 }
 .country-option input {
     margin-right: 8px;
@@ -251,7 +256,7 @@ body {
     font-size: 0.9em;
     margin: 15px 0;
     line-height: 1.5;
-    color: #cccccc;
+    color: black; /* ИЗМЕНЕНО: Цвет текста */
     font-style: italic;
 }
 

@@ -377,21 +377,16 @@ body {
 }
 
 .generated-passport .activity-description {
-    font-size: 0.8em; /* Изменено: уменьшен размер текста */
-    margin: 15px 0;
-    line-height: 1.5;
-    color: #cccccc;
-    font-style: italic;
-}
-
-/* --- Стили для логотипа проекта в сгенерированном паспорте --- */
-.generated-passport .project-logo {
-    position: absolute;
-    top: 10px; /* Отступ сверху */
-    right: 10px; /* Отступ справа */
-    width: 140px; /* Ширина логотипа */
-    height: 50px; /* Высота логотипа */
-    z-index: 10; /* Убедимся, что логотип поверх других элементов */
+    font-size: 0.8em; /* Текущий размер */
+    margin: 30px 0;   /* Текущий отступ (сверху и снизу) */
+    line-height: 1.5; /* Текущий межстрочный интервал */
+    color: #cccccc;   /* Текущий цвет */
+    font-style: italic; /* Текущий стиль */
+    /* --- Добавьте или измените это свойство --- */
+    margin-top: 30px; /* Увеличьте значение, например до 30px */
+    /* Если вы хотите только отступ снизу, используйте margin-bottom */
+    /* margin-bottom: 20px; */
+    /* margin-top: 15px; */ /* Если нужно уменьшить отступ сверху */
 }
 
 /* --- Стили для кнопок действий --- */
@@ -474,36 +469,12 @@ body {
 
 /* --- Стили для логотипа проекта в сгенерированном паспорте --- */
 .generated-passport .project-logo {
-    /* position: absolute; */ /* Убираем absolute */
-    /* top: 25px; */ /* Убираем top */
-    /* right: 10px; */ /* Убираем right */
+    position: absolute;
+    top: 25px; /* Отступ сверху */
+    right: 10px; /* Отступ справа */
     width: 140px; /* Ширина логотипа */
     height: 50px; /* Высота логотипа */
     z-index: 10; /* Убедимся, что логотип поверх других элементов */
-    align-self: flex-end; /* Прижимаем к правому краю .text-content */
-    margin-bottom: auto; /* Прижимаем к верхнему краю .text-content */
-}
-
-/* --- НОВЫЕ СТИЛИ: Для новой структуры сгенерированной карточки --- */
-.avatar-and-text-container {
-    display: flex;
-    gap: 20px; /* Отступ между аватаром и текстом */
-    width: 100%;
-    height: 100%;
-}
-
-.avatar-wrapper {
-    flex: 0 0 auto; /* Не растягиваем, ширина по содержимому (аватар) */
-}
-
-.text-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Распределяем пространство между элементами */
-    flex: 1; /* Растягиваем, чтобы занять всё оставшееся место */
-    padding: 20px;
-    position: relative; /* Для позиционирования логотипа */
-    min-height: 180px; /* Убедимся, что у .text-content есть минимальная высота */
 }
 
 

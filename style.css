@@ -238,15 +238,15 @@ body {
 }
 
 .generate-btn {
-    background: linear-gradient(to right, #00C9FF, #92FE9D);
-    color: #000;
+    background: linear-gradient(to right, #FF8C00, #FFA500); /* Изменённый градиент (оранжевый) */
+    color: #000; /* Цвет текста */
     border: none;
-    padding: 12px 24px;
-    border-radius: 24px;
+    padding: 8px 16px; /* Уменьшенный padding */
+    border-radius: 0; /* Квадратные края */
     cursor: pointer;
     font-weight: bold;
     margin: 15px 0;
-    font-size: 1em;
+    font-size: 0.9em; /* Уменьшенный размер шрифта */
     transition: all 0.3s ease;
 }
 

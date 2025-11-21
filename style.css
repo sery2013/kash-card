@@ -6,7 +6,7 @@
 
 /* Центрируем и ограничиваем ширину всего содержимого, как пост в Twitter */
 body {
-    background-color: #0d0d0d;
+    background-color: #FFA500; /* ИЗМЕНЕНО: Оранжевый фон для ВСЕГО body */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: white;
     display: flex;
@@ -483,4 +483,48 @@ body {
     width: 140px; /* Ширина логотипа */
     height: 50px; /* Высота логотипа */
     z-index: 10; /* Убедимся, что логотип поверх других элементов */
+}
+
+/* --- Стили для секции генерации --- */
+/* Чтобы весь фон секции генерации был оранжевым, а не чёрным */
+#generated-section {
+    background-color: #FFA500; /* ИЗМЕНЕНО: Оранжевый фон для всей секции */
+}
+
+/* Чтобы контейнер внутри секции генерации имел белую рамку (как на скриншоте) */
+#generated-section .container {
+    background-color: #FFA500; /* ИЗМЕНЕНО: Оранжевый фон для контейнера */
+    border: 10px solid white; /* Добавлен белый бордер */
+    border-radius: 16px; /* Скруглённые углы */
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5); /* Тень */
+}
+
+/* Чтобы заголовок "Your generated passport:" был чёрным на оранжевом фоне */
+#generated-section .container h2 {
+    color: black; /* ИЗМЕНЕНО: Цвет заголовка */
+}
+
+/* Чтобы кнопки внизу были чёрными на оранжевом фоне */
+.generated-actions .action-btn {
+    background: #FFA500; /* ИЗМЕНЕНО: Оранжевый фон для кнопок */
+    color: black; /* ИЗМЕНЕНО: Цвет текста */
+    border: 2px solid black; /* Добавлена чёрная рамка */
+    box-shadow: none; /* Убираем тень */
+}
+
+.generated-actions .action-btn:hover {
+    background: #FFD580; /* Светлее при наведении */
+    box-shadow: 0 0 10px rgba(0,0,0,0.3); /* Добавляем тень при наведении */
+}
+
+/* Чтобы текст в кнопках был чёрным */
+.generated-actions .action-btn.download-btn,
+.generated-actions .action-btn.twitter-btn,
+.generated-actions .action-btn.back-btn {
+    color: black; /* ИЗМЕНЕНО: Цвет текста */
+}
+
+/* Чтобы ссылки в кнопках были чёрными */
+.generated-actions .action-btn a {
+    color: black; /* ИЗМЕНЕНО: Цвет текста */
 }
